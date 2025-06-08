@@ -1,5 +1,5 @@
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
-import { Rol } from "./rol";
+ import { Rol } from "./rol";
 
     
 @Entity('Usuario')
@@ -9,21 +9,27 @@ export class Usuario{
     
     idUsuario: number;
 
-    @ManyToOne(()=>Rol, (rol)=> rol.idRol)
-    @JoinColumn({name:'id_rol'})
-       rol:Rol
+     @ManyToOne(()=>Rol, (rol)=> rol.idRol)
+     @JoinColumn({name:'id_rol'})
+        rol:Rol
         
-    @Column({name:'nombre'})
+@Column({ name: 'nombre'})
     nombre: string;
-    @Column({name:'correo'})
+@Column({ name: 'apellido_paterno'})
+    apellidoPaterno: string;
+@Column({ name: 'apellido_materno'})
+    apellidoMaterno: string;
+@Column({ name: 'correo'})
     correo:string ;
-    @Column({name:'contraseña'})
-    contraseña: string;
-    @Column({name:'foto_perfil'})
+@Column({ name: 'contraseña'})
+    contrasena: string;
+@Column({ name: 'fecha_nacimiento'})
+    fechaNacimiento: string;
+@Column({ name: 'foto_perfil'})
     fotoPerfil: string;
-    @Column({name:'fecha_creacion'})
+@Column({ name: 'fecha_creacion'})
     fechaCreacion: Date;
-    @Column({name:'estado'})
+@Column({ name: 'estado_auditoria'})
     estado: boolean;
 
 

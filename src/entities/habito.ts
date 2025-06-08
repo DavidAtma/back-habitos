@@ -23,10 +23,8 @@ import { Categoria } from "./categoria";
     descripcion: string;
     @Column({name:'hora_sugerida'})
     horaSugerida: string;
-    @Column({name:'tipo'})
-    tipo:string;
     @Column({name:'fecha_creacion'})
     fechaCreacion: Date;
-    @Column({name:'estado'})
+    @Column({name:'estado_auditoria'})
     estado: boolean;
  }
