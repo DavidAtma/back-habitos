@@ -5,6 +5,9 @@ import usuarioRouter from './routes/usuario.route';
 import rolesRouter from './routes/rol.route';
 import frecuenciasRouter from './routes/frecuencia.route'
 import recordatorioRouter from './routes/recordatorio.route'
+import fraseRouter from './routes/frase.route'
+import seguimientoRouter from './routes/seguimiento.route'
+
 
 
 import { AppDataSource } from './config/appdatasource';
@@ -17,8 +20,9 @@ app.use('/api/v1/usuarios', usuarioRouter);
 app.use('/api/v1/roles', rolesRouter);
 app.use('/api/v1/frecuencias', frecuenciasRouter);
 app.use('/api/v1/recordatorios', recordatorioRouter);
+app.use('/api/v1/frases', fraseRouter);
 
-
+app.use('/api/v1/seguimientos', seguimientoRouter);
 
 
 export const startServer = async () => {

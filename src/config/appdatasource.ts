@@ -5,6 +5,8 @@ import { Rol } from "../entities/rol";
 import { Usuario } from "../entities/usuario";
 import { FrecuenciaHabito } from "../entities/frecuenciaHabito";
 import { Recordatorio } from "../entities/recordatorio";
+import { FraseMotivacional } from "../entities/fraseMotivacional";
+import { Seguimiento } from "../entities/seguimiento";
 
 export const AppDataSource = new DataSource({
 
@@ -28,7 +30,9 @@ synchronize: false,
     Rol,
     Usuario,
     FrecuenciaHabito,
-    Recordatorio
+    Recordatorio,
+    FraseMotivacional,
+    Seguimiento
   ],
 
 });
