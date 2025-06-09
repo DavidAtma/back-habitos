@@ -2,7 +2,7 @@ import AppDataSource from "../config/appdatasource";
 import { Usuario } from "../entities/usuario";
 
 
-export const insertUsuario = async (usuario: Partial<Usuario>) => {
+export const insertarUsuario = async (usuario: Partial<Usuario>) => {
     if (!AppDataSource.isInitialized) {
         await AppDataSource.initialize();
     }

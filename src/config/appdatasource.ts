@@ -3,6 +3,8 @@ import { Habito } from "../entities/habito";
 import { Categoria } from "../entities/categoria";
 import { Rol } from "../entities/rol";
 import { Usuario } from "../entities/usuario";
+import { FrecuenciaHabito } from "../entities/frecuenciaHabito";
+import { Recordatorio } from "../entities/recordatorio";
 
 export const AppDataSource = new DataSource({
 
@@ -24,7 +26,9 @@ synchronize: false,
     Habito,
     Categoria,
     Rol,
-    Usuario
+    Usuario,
+    FrecuenciaHabito,
+    Recordatorio
   ],
 
 });

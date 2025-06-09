@@ -1,4 +1,5 @@
-import { listarUsuario } from "../services/usuario.service";
+import { Router } from "express";
+import { insertarUsuario, listarUsuario } from "../controllers/usuario.controller";
 
 
 const router: Router = Router();

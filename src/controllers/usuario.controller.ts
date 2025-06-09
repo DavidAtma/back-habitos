@@ -8,7 +8,7 @@ export const insertarUsuario = async(req:Request, res: Response) =>{
 
     try{
     const usuario : Partial<Usuario> = req.body;
-    await usuarioService.insertUsuario(usuario);
+    await usuarioService.insertarUsuario(usuario);
     res.json(BaseResponse.success(null, MensajeController.INSERTADO_OK));
 
     }catch (error) {
@@ -21,7 +21,7 @@ export const insertarUsuario = async(req:Request, res: Response) =>{
     
 }
 
-export const listarHabitos = async (req: Request, res: Response) => {
+export const listarUsuario = async (req: Request, res: Response) => {
     try {
         const usuarios = await usuarioService.listarUsuario();
         res.json(BaseResponse.success(usuarios, MensajeController.CONSULTA_OK));
