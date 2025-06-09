@@ -3,4 +3,5 @@ export enum MensajeController {
     ACTUALIZADO_OK = "Actualizado correctamente",
     ELIMINADO_OK = "Eliminado correctamente",
     NO_ENCONTRADO = "No encontrado",
+    CONSULTA_OK= "Listado",
 }

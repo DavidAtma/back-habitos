@@ -21,7 +21,7 @@ export class Usuario{
     apellidoMaterno: string;
 @Column({ name: 'correo'})
     correo:string ;
-@Column({ name: 'contraseña'})
+@Column({ name: 'contrasena'})
     contrasena: string;
 @Column({ name: 'fecha_nacimiento'})
     fechaNacimiento: string;
