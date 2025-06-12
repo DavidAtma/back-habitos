@@ -58,8 +58,7 @@ El backend incluye al menos 2 endpoints funcionales por entidad:
 
 ## 📬 Documentación Postman
 
-🔗 [Ver colección en Postman](https://www.postman.com/)  
-*(PENDIENTE LINK POSTMAN)*
+🔗 [Ver colección en Postman]([https://www.postman.com/](https://documenter.getpostman.com/view/39755379/2sB2x5JDJf))  
 
 ## 🔗 Repositorios del Proyecto
 
