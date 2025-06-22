@@ -12,13 +12,15 @@ const repository = AppDataSource.getRepository(FraseMotivacional);
 
 }
 
-export const listarFrase = async (): Promise<FraseMotivacional[]> => {
+export const listarFrase = async (): Promise<FraseMotivacional | null> => {
     if (!AppDataSource.isInitialized) {
         await AppDataSource.initialize();
     }
 
     const repository = AppDataSource.getRepository(FraseMotivacional);
-    return await repository.find({
-      
-    });
+    const frases = await repository.find(); 
+    if (frases.length === 0) return null;
+
+    const randomIndex = Math.floor(Math.random() * frases.length);
+    return frases[randomIndex]; 
 };

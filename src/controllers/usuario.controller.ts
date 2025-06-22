@@ -3,6 +3,7 @@ import { Usuario } from "../entities/usuario";
 import * as usuarioService from "../services/usuario.service"
 import { BaseResponse } from "../shared/base-response";
 import { MensajeController } from "../shared/constants";
+import AppDataSource from "../config/appdatasource";
 
 export const insertarUsuario = async(req:Request, res: Response) =>{
 
@@ -30,3 +31,4 @@ export const listarUsuario = async (req: Request, res: Response) => {
         res.status(500).json(BaseResponse.error(error.message));
     }
 };
+

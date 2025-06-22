@@ -23,3 +23,22 @@ export const listarUsuario = async (): Promise<Usuario[]> => {
         relations: ['rol'], 
     });
 };
+export const loginUsuario = async (correo: string, contrasena: string) => {
+  if (!AppDataSource.isInitialized) {
+    await AppDataSource.initialize(); // Esto previene el error si aún no se inicializó
+  }
+
+  const repo = AppDataSource.getRepository(Usuario);
+
+  try {
+    const usuario = await repo.findOne({
+      where: { correo, contrasena },
+      relations: ['rol'],
+    });
+
+    return usuario;
+  } catch (error) {
+    console.error("Error en loginUsuario:", error);
+    throw new Error("Error al buscar usuario");
+  }
+};

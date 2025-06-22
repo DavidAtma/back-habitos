@@ -16,9 +16,6 @@ export const insertarCategoria = async(req:Request, res: Response) =>{
         res.status(500).json(BaseResponse.error(error.message));
     }
 
-
-
-    
 }
 
 export const listarCategoria = async (req: Request, res: Response) => {
