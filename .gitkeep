@@ -1,0 +1,3 @@
+touch src/controllers/.gitkeep
+touch src/routes/.gitkeep
+touch src/config/.gitkeep
