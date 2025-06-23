@@ -23,7 +23,6 @@ app.use('/api/v1/frecuencias', frecuenciasRouter);
 app.use('/api/v1/recordatorios', recordatorioRouter);
 app.use('/api/v1/frases', fraseRouter);
 app.use('/api/v1/auth', authRouter);
-
 app.use('/api/v1/seguimientos', seguimientoRouter);
 
 

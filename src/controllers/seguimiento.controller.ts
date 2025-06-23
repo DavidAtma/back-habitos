@@ -18,12 +18,7 @@ export const insertarSeguimiento = async(req:Request, res: Response) =>{
         res.status(500).json(BaseResponse.error(error.message));
     }
 
-
-
-    
 }
-    
-
 
 export const listarSeguimientos = async (req: Request, res: Response) => {
     try {

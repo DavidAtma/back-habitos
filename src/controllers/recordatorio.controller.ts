@@ -16,9 +16,6 @@ export const insertarRecordatorio = async(req:Request, res: Response) =>{
         res.status(500).json(BaseResponse.error(error.message));
     }
 
-
-
-    
 }
 
 export const listarRecordatorio = async (req: Request, res: Response) => {

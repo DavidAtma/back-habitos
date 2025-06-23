@@ -1,31 +1,65 @@
 import { Request, Response } from "express";
-import { Habito } from "../entities/habito";
-import * as habitoService from "../services/habito.service"
+import * as habitoService from "../services/habito.service";
 import { BaseResponse } from "../shared/base-response";
 import { MensajeController } from "../shared/constants";
-export const insertarHabito = async(req:Request, res: Response) =>{
+import { Habito } from "../entities/habito";
 
-    try{
-    const habito : Partial<Habito> = req.body;
-    await habitoService.insertarHabito(habito);
-    res.json(BaseResponse.success(null, MensajeController.INSERTADO_OK));
-
-    }catch (error) {
-        console.error(error);
+// Insertar hábito y retornar el ID generado
+export const insertarHabito = async (req: Request, res: Response) => {
+    try {
+        const habito: Partial<Habito> = req.body;
+        const nuevoHabito = await habitoService.insertarHabito(habito);
+        res.json(BaseResponse.success(nuevoHabito.idHabito, MensajeController.INSERTADO_OK));
+    } catch (error: any) {
+        console.error("Error insertarHabito:", error);
         res.status(500).json(BaseResponse.error(error.message));
     }
+};
 
-
-
-    
-}
-
-export const listarHabitos = async (req: Request, res: Response) => {
+// Listar todos los hábitos
+export const listarHabitos = async (_req: Request, res: Response) => {
     try {
         const habitos = await habitoService.listarHabitos();
         res.json(BaseResponse.success(habitos, MensajeController.CONSULTA_OK));
     } catch (error: any) {
         console.error("Error listarHabitos:", error);
+        res.status(500).json(BaseResponse.error(error.message));
+    }
+};
+
+// Listar hábitos por ID de usuario
+export const listarHabitosPorUsuario = async (req: Request, res: Response) => {
+    try {
+        const idUsuario = parseInt(req.params.idUsuario);
+        const habitos = await habitoService.listarHabitosPorUsuario(idUsuario);
+        res.json(BaseResponse.success(habitos, MensajeController.CONSULTA_OK));
+    } catch (error: any) {
+        console.error("Error listarHabitosPorUsuario:", error);
+        res.status(500).json(BaseResponse.error(error.message));
+    }
+};
+
+// Actualizar hábito
+export const actualizarHabito = async (req: Request, res: Response) => {
+    try {
+        const idHabito = parseInt(req.params.idHabito);
+        const data: Partial<Habito> = req.body;
+        await habitoService.actualizarHabito(idHabito, data);
+        res.json(BaseResponse.success(null, MensajeController.ACTUALIZADO_OK));
+    } catch (error: any) {
+        console.error("Error actualizarHabito:", error);
+        res.status(500).json(BaseResponse.error(error.message));
+    }
+};
+
+// Eliminar hábito
+export const eliminarHabito = async (req: Request, res: Response) => {
+    try {
+        const idHabito = parseInt(req.params.idHabito);
+        await habitoService.eliminarHabito(idHabito);
+        res.json(BaseResponse.success(null, MensajeController.ELIMINADO_OK));
+    } catch (error: any) {
+        console.error("Error eliminarHabito:", error);
         res.status(500).json(BaseResponse.error(error.message));
     }
 };

@@ -15,9 +15,6 @@ export const insertarFrecuencia = async(req:Request, res: Response) =>{
         console.error(error);
         res.status(500).json(BaseResponse.error(error.message));
     }
-
-
-
     
 }
 
