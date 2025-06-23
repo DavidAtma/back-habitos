@@ -3,9 +3,9 @@ import habitoRouter from './routes/habito.route'
 import categoriaRouter from './routes/categoria.route';
 import usuarioRouter from './routes/usuario.route';
 import rolesRouter from './routes/rol.route';
-import frecuenciasRouter from './routes/frecuencia.route'
+import frecuenciasRouter from './routes/frecuenciaHabito.route'
 import recordatorioRouter from './routes/recordatorio.route'
-import fraseRouter from './routes/frase.route'
+import fraseRouter from './routes/fraseMotivacional.route'
 import seguimientoRouter from './routes/seguimiento.route'
 import authRouter from './routes/auth.route';
 

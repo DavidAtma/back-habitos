@@ -1,26 +1,59 @@
-
-
-import AppDataSource from "../config/appdatasource";
+import { AppDataSource } from "../config/appdatasource";
 import { Recordatorio } from "../entities/recordatorio";
 
-export const insertarRecordatorio = async (recordatorio: Partial<Recordatorio>) => {
+// Insertar recordatorio
+export const insertarRecordatorio = async (recordatorio: Partial<Recordatorio>): Promise<Recordatorio> => {
     if (!AppDataSource.isInitialized) {
         await AppDataSource.initialize();
     }
 
+    const repository = AppDataSource.getRepository(Recordatorio);
+    return await repository.save(recordatorio);
+};
 
-const repository = AppDataSource.getRepository(Recordatorio);
-    await repository.save(recordatorio);
-
-}
-
-export const listarRecordatorio = async (): Promise<Recordatorio[]> => {
+// Listar todos los recordatorios
+export const listarRecordatorios = async (): Promise<Recordatorio[]> => {
     if (!AppDataSource.isInitialized) {
         await AppDataSource.initialize();
     }
 
     const repository = AppDataSource.getRepository(Recordatorio);
     return await repository.find({
-        relations: ['habito'], 
+        relations: ['habito'],
+        order: { idRecordatorio: "DESC" }
     });
+};
+
+// Listar recordatorios por hábito
+export const listarRecordatoriosPorHabito = async (idHabito: number): Promise<Recordatorio[]> => {
+    if (!AppDataSource.isInitialized) {
+        await AppDataSource.initialize();
+    }
+
+    const repository = AppDataSource.getRepository(Recordatorio);
+    return await repository.find({
+        where: { habito: { idHabito } },
+        relations: ['habito'],
+        order: { idRecordatorio: "DESC" }
+    });
+};
+
+// Actualizar recordatorio
+export const actualizarRecordatorio = async (idRecordatorio: number, data: Partial<Recordatorio>): Promise<void> => {
+    if (!AppDataSource.isInitialized) {
+        await AppDataSource.initialize();
+    }
+
+    const repository = AppDataSource.getRepository(Recordatorio);
+    await repository.update({ idRecordatorio }, data);
+};
+
+// Eliminar recordatorio
+export const eliminarRecordatorio = async (idRecordatorio: number): Promise<void> => {
+    if (!AppDataSource.isInitialized) {
+        await AppDataSource.initialize();
+    }
+
+    const repository = AppDataSource.getRepository(Recordatorio);
+    await repository.delete({ idRecordatorio });
 };

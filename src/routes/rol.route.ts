@@ -1,7 +1,18 @@
 import { Router } from "express";
-import { insertarRol, listarRol } from "../controllers/rol.controller";
+import * as rolController from "../controllers/rol.controller";
 
-const router: Router = Router();
-router.post('/', insertarRol);
-router.get('/', listarRol);
+const router = Router();
+
+// POST /roles
+router.post("/", rolController.insertarRol);
+
+// GET /roles
+router.get("/", rolController.listarRoles);
+
+// PUT /roles/:idRol
+router.put("/:idRol", rolController.actualizarRol);
+
+// DELETE /roles/:idRol
+router.delete("/:idRol", rolController.eliminarRol);
+
 export default router;

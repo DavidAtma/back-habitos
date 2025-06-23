@@ -1,10 +1,18 @@
 import { Router } from "express";
-import { insertarCategoria, listarCategoria } from "../controllers/categoria.controller";
+import * as categoriaController from "../controllers/categoria.controller";
 
+const router = Router();
 
-const router: Router = Router();
-router.post('/', insertarCategoria);
-router.get('/', listarCategoria);
+// POST /categorias
+router.post("/", categoriaController.insertarCategoria);
 
+// GET /categorias
+router.get("/", categoriaController.listarCategorias);
+
+// PUT /categorias/:idCategoria
+router.put("/:idCategoria", categoriaController.actualizarCategoria);
+
+// DELETE /categorias/:idCategoria
+router.delete("/:idCategoria", categoriaController.eliminarCategoria);
 
 export default router;
