@@ -42,31 +42,112 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.listarSeguimientos = exports.insertarSeguimiento = void 0;
+exports.activarSeguimiento = exports.eliminarSeguimiento = exports.actualizarSeguimiento = exports.listarSeguimientosPorUsuarioYFecha = exports.listarSeguimientosPorHabito = exports.listarSeguimientos = exports.listarSeguimientosActivos = exports.insertarSeguimiento = void 0;
 const seguimientoService = __importStar(require("../services/seguimiento.service"));
 const base_response_1 = require("../shared/base-response");
 const constants_1 = require("../shared/constants");
+// Insertar seguimiento
 const insertarSeguimiento = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const rol = req.body;
-        yield seguimientoService.insertarSeguimiento(rol);
-        res.json(base_response_1.BaseResponse.success(null, constants_1.MensajeController.INSERTADO_OK));
+        const seguimiento = req.body;
+        const nuevoSeguimiento = yield seguimientoService.insertarSeguimiento(seguimiento);
+        res.json(base_response_1.BaseResponse.success({ idSeguimiento: nuevoSeguimiento.idSeguimiento }, constants_1.MensajeController.INSERTADO_OK));
     }
     catch (error) {
-        console.error(error);
+        console.error("Error insertarSeguimiento:", error);
         res.status(500).json(base_response_1.BaseResponse.error(error.message));
     }
 });
 exports.insertarSeguimiento = insertarSeguimiento;
-const listarSeguimientos = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+// Listar seguimientos activos
+const listarSeguimientosActivos = (_req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const frecuencias = yield seguimientoService.listarSeguimientos();
-        res.json(base_response_1.BaseResponse.success(frecuencias, constants_1.MensajeController.CONSULTA_OK));
+        const seguimientos = yield seguimientoService.listarSeguimientosActivos();
+        res.json(base_response_1.BaseResponse.success(seguimientos, constants_1.MensajeController.CONSULTA_OK));
     }
     catch (error) {
-        console.error("Error listarFrecuencia:", error);
+        console.error("Error listarSeguimientosActivos:", error);
+        res.status(500).json(base_response_1.BaseResponse.error(error.message));
+    }
+});
+exports.listarSeguimientosActivos = listarSeguimientosActivos;
+// Listar seguimientos
+const listarSeguimientos = (_req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const seguimientos = yield seguimientoService.listarSeguimientos();
+        res.json(base_response_1.BaseResponse.success(seguimientos, constants_1.MensajeController.CONSULTA_OK));
+    }
+    catch (error) {
+        console.error("Error listarSeguimientos:", error);
         res.status(500).json(base_response_1.BaseResponse.error(error.message));
     }
 });
 exports.listarSeguimientos = listarSeguimientos;
+// Listar seguimientos por hábito
+const listarSeguimientosPorHabito = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const idHabito = parseInt(req.params.idHabito);
+        const seguimientos = yield seguimientoService.listarSeguimientosPorHabito(idHabito);
+        res.json(base_response_1.BaseResponse.success(seguimientos, constants_1.MensajeController.CONSULTA_OK));
+    }
+    catch (error) {
+        console.error("Error listarSeguimientosPorHabito:", error);
+        res.status(500).json(base_response_1.BaseResponse.error(error.message));
+    }
+});
+exports.listarSeguimientosPorHabito = listarSeguimientosPorHabito;
+// Listar seguimientos por usuario y fecha
+const listarSeguimientosPorUsuarioYFecha = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const idUsuario = parseInt(req.params.idUsuario);
+        const fecha = req.params.fecha;
+        const seguimientos = yield seguimientoService.listarSeguimientosPorUsuarioYFecha(idUsuario, fecha);
+        res.json(base_response_1.BaseResponse.success(seguimientos, constants_1.MensajeController.CONSULTA_OK));
+    }
+    catch (error) {
+        console.error("Error listarSeguimientosPorUsuarioYFecha:", error);
+        res.status(500).json(base_response_1.BaseResponse.error(error.message));
+    }
+});
+exports.listarSeguimientosPorUsuarioYFecha = listarSeguimientosPorUsuarioYFecha;
+// Actualizar seguimiento
+const actualizarSeguimiento = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const idSeguimiento = parseInt(req.params.idSeguimiento);
+        const data = req.body;
+        yield seguimientoService.actualizarSeguimiento(idSeguimiento, data);
+        res.json(base_response_1.BaseResponse.success(null, constants_1.MensajeController.ACTUALIZADO_OK));
+    }
+    catch (error) {
+        console.error("Error actualizarSeguimiento:", error);
+        res.status(500).json(base_response_1.BaseResponse.error(error.message));
+    }
+});
+exports.actualizarSeguimiento = actualizarSeguimiento;
+// Eliminar seguimiento
+const eliminarSeguimiento = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const idSeguimiento = parseInt(req.params.idSeguimiento);
+        yield seguimientoService.eliminarSeguimiento(idSeguimiento);
+        res.json(base_response_1.BaseResponse.success(null, constants_1.MensajeController.ELIMINADO_OK));
+    }
+    catch (error) {
+        console.error("Error eliminarSeguimiento:", error);
+        res.status(500).json(base_response_1.BaseResponse.error(error.message));
+    }
+});
+exports.eliminarSeguimiento = eliminarSeguimiento;
+// Activar seguimiento
+const activarSeguimiento = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const idSeguimiento = parseInt(req.params.idSeguimiento);
+        yield seguimientoService.activarSeguimiento(idSeguimiento);
+        res.json(base_response_1.BaseResponse.success(null, constants_1.MensajeController.ACTUALIZADO_OK));
+    }
+    catch (error) {
+        console.error("Error activarSeguimiento:", error);
+        res.status(500).json(base_response_1.BaseResponse.error(error.message));
+    }
+});
+exports.activarSeguimiento = activarSeguimiento;
 //# sourceMappingURL=seguimiento.controller.js.map

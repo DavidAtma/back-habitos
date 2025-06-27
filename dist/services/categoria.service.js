@@ -9,23 +9,66 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.listarCategoria = exports.insertarCategoria = void 0;
+exports.activarCategoria = exports.eliminarCategoria = exports.actualizarCategoria = exports.listarCategorias = exports.listarCategoriasActivas = exports.insertarCategoria = void 0;
 const appdatasource_1 = require("../config/appdatasource");
 const categoria_1 = require("../entities/categoria");
+// Insertar categoría
 const insertarCategoria = (categoria) => __awaiter(void 0, void 0, void 0, function* () {
     if (!appdatasource_1.AppDataSource.isInitialized) {
         yield appdatasource_1.AppDataSource.initialize();
     }
     const repository = appdatasource_1.AppDataSource.getRepository(categoria_1.Categoria);
-    yield repository.save(categoria);
+    return yield repository.save(categoria);
 });
 exports.insertarCategoria = insertarCategoria;
-const listarCategoria = () => __awaiter(void 0, void 0, void 0, function* () {
+// Listar todas las categorías activas
+const listarCategoriasActivas = () => __awaiter(void 0, void 0, void 0, function* () {
     if (!appdatasource_1.AppDataSource.isInitialized) {
         yield appdatasource_1.AppDataSource.initialize();
     }
     const repository = appdatasource_1.AppDataSource.getRepository(categoria_1.Categoria);
-    return yield repository.find({});
+    return yield repository.find({
+        where: { estado: true },
+        order: { idCategoria: "DESC" }
+    });
 });
-exports.listarCategoria = listarCategoria;
+exports.listarCategoriasActivas = listarCategoriasActivas;
+// Listar todas las categorías
+const listarCategorias = () => __awaiter(void 0, void 0, void 0, function* () {
+    if (!appdatasource_1.AppDataSource.isInitialized) {
+        yield appdatasource_1.AppDataSource.initialize();
+    }
+    const repository = appdatasource_1.AppDataSource.getRepository(categoria_1.Categoria);
+    return yield repository.find({
+        order: { idCategoria: "DESC" }
+    });
+});
+exports.listarCategorias = listarCategorias;
+// Actualizar categoría
+const actualizarCategoria = (idCategoria, data) => __awaiter(void 0, void 0, void 0, function* () {
+    if (!appdatasource_1.AppDataSource.isInitialized) {
+        yield appdatasource_1.AppDataSource.initialize();
+    }
+    const repository = appdatasource_1.AppDataSource.getRepository(categoria_1.Categoria);
+    yield repository.update({ idCategoria }, data);
+});
+exports.actualizarCategoria = actualizarCategoria;
+// Eliminar categoría
+const eliminarCategoria = (idCategoria) => __awaiter(void 0, void 0, void 0, function* () {
+    if (!appdatasource_1.AppDataSource.isInitialized) {
+        yield appdatasource_1.AppDataSource.initialize();
+    }
+    const repository = appdatasource_1.AppDataSource.getRepository(categoria_1.Categoria);
+    yield repository.update({ idCategoria }, { estado: false });
+});
+exports.eliminarCategoria = eliminarCategoria;
+// Activar categoría
+const activarCategoria = (idCategoria) => __awaiter(void 0, void 0, void 0, function* () {
+    if (!appdatasource_1.AppDataSource.isInitialized) {
+        yield appdatasource_1.AppDataSource.initialize();
+    }
+    const repository = appdatasource_1.AppDataSource.getRepository(categoria_1.Categoria);
+    yield repository.update({ idCategoria }, { estado: true });
+});
+exports.activarCategoria = activarCategoria;
 //# sourceMappingURL=categoria.service.js.map

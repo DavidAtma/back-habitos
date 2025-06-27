@@ -19,18 +19,18 @@ __decorate([
     __metadata("design:type", Number)
 ], Categoria.prototype, "idCategoria", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ name: 'nombre' }),
+    (0, typeorm_1.Column)({ name: 'nombre', type: 'varchar', length: 250 }),
     __metadata("design:type", String)
 ], Categoria.prototype, "nombre", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ name: 'fecha_creacion' }),
+    (0, typeorm_1.CreateDateColumn)({ name: 'fecha_creacion', type: 'datetime' }),
     __metadata("design:type", Date)
 ], Categoria.prototype, "fechaCreacion", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ name: 'estado_auditoria' }),
+    (0, typeorm_1.Column)({ name: 'estado_auditoria', type: 'bit', default: 1 }),
     __metadata("design:type", Boolean)
 ], Categoria.prototype, "estado", void 0);
 exports.Categoria = Categoria = __decorate([
-    (0, typeorm_1.Entity)('Categoria')
+    (0, typeorm_1.Entity)('Categorias')
 ], Categoria);
 //# sourceMappingURL=categoria.js.map

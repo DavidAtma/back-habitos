@@ -18,14 +18,14 @@ exports.Seguimiento = Seguimiento;
 __decorate([
     (0, typeorm_1.PrimaryGeneratedColumn)({ name: 'id_seguimiento' }),
     __metadata("design:type", Number)
-], Seguimiento.prototype, "idFrecuencia", void 0);
+], Seguimiento.prototype, "idSeguimiento", void 0);
 __decorate([
     (0, typeorm_1.ManyToOne)(() => habito_1.Habito, (habito) => habito.idHabito),
     (0, typeorm_1.JoinColumn)({ name: 'id_habito' }),
     __metadata("design:type", habito_1.Habito)
 ], Seguimiento.prototype, "habito", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ name: 'fecha' }),
+    (0, typeorm_1.Column)({ name: 'fecha', type: 'date' }),
     __metadata("design:type", Date)
 ], Seguimiento.prototype, "fecha", void 0);
 __decorate([
@@ -33,22 +33,18 @@ __decorate([
     __metadata("design:type", Boolean)
 ], Seguimiento.prototype, "completado", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ name: 'nota_dia' }),
+    (0, typeorm_1.Column)({ name: 'nota_dia', type: 'varchar', length: 250 }),
     __metadata("design:type", String)
 ], Seguimiento.prototype, "notaDia", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ name: 'fecha_registro' }),
-    __metadata("design:type", Date)
-], Seguimiento.prototype, "fechaRegistro", void 0);
-__decorate([
-    (0, typeorm_1.Column)({ name: 'fecha_creacion' }),
+    (0, typeorm_1.CreateDateColumn)({ name: 'fecha_creacion', type: 'datetime' }),
     __metadata("design:type", Date)
 ], Seguimiento.prototype, "fechaCreacion", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ name: 'estado_auditoria' }),
+    (0, typeorm_1.Column)({ name: 'estado_auditoria', type: 'bit', default: 1 }),
     __metadata("design:type", Boolean)
 ], Seguimiento.prototype, "estado", void 0);
 exports.Seguimiento = Seguimiento = __decorate([
-    (0, typeorm_1.Entity)('Seguimiento')
+    (0, typeorm_1.Entity)('Seguimientos')
 ], Seguimiento);
 //# sourceMappingURL=seguimiento.js.map

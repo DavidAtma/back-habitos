@@ -43,7 +43,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.login = void 0;
-const usuarioService = __importStar(require("../services/usuario.service"));
+const authService = __importStar(require("../services/auth.service"));
 const base_response_1 = require("../shared/base-response");
 const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { correo, contrasena } = req.body;
@@ -52,7 +52,7 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         return;
     }
     try {
-        const usuario = yield usuarioService.loginUsuario(correo, contrasena);
+        const usuario = yield authService.login(correo, contrasena);
         if (!usuario) {
             res.status(404).json(base_response_1.BaseResponse.error("Usuario o contraseña incorrectos"));
             return;

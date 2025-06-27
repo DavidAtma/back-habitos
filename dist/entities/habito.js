@@ -31,26 +31,26 @@ __decorate([
     __metadata("design:type", categoria_1.Categoria)
 ], Habito.prototype, "categoria", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ name: 'nombre' }),
+    (0, typeorm_1.Column)({ name: 'nombre', type: 'varchar', length: 250 }),
     __metadata("design:type", String)
 ], Habito.prototype, "nombre", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ name: 'descripcion' }),
+    (0, typeorm_1.Column)({ name: 'descripcion', type: 'varchar', length: 250 }),
     __metadata("design:type", String)
 ], Habito.prototype, "descripcion", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ name: 'hora_sugerida' }),
+    (0, typeorm_1.Column)({ name: 'hora_sugerida', type: 'time' }),
     __metadata("design:type", String)
 ], Habito.prototype, "horaSugerida", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ name: 'fecha_creacion' }),
+    (0, typeorm_1.CreateDateColumn)({ name: 'fecha_creacion', type: 'datetime' }),
     __metadata("design:type", Date)
 ], Habito.prototype, "fechaCreacion", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ name: 'estado_auditoria' }),
+    (0, typeorm_1.Column)({ name: 'estado_auditoria', type: 'bit', default: 1 }),
     __metadata("design:type", Boolean)
 ], Habito.prototype, "estado", void 0);
 exports.Habito = Habito = __decorate([
-    (0, typeorm_1.Entity)('Habito')
+    (0, typeorm_1.Entity)('Habitos')
 ], Habito);
 //# sourceMappingURL=habito.js.map

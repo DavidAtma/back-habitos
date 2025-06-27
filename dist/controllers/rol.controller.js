@@ -42,31 +42,85 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.listarRol = exports.insertarRol = void 0;
+exports.activarRol = exports.eliminarRol = exports.actualizarRol = exports.listarRolesActivos = exports.listarRoles = exports.insertarRol = void 0;
 const rolService = __importStar(require("../services/rol.service"));
 const base_response_1 = require("../shared/base-response");
 const constants_1 = require("../shared/constants");
+// Insertar rol
 const insertarRol = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const rol = req.body;
-        yield rolService.insertarRol(rol);
-        res.json(base_response_1.BaseResponse.success(null, constants_1.MensajeController.INSERTADO_OK));
+        const nuevoRol = yield rolService.insertarRol(rol);
+        res.json(base_response_1.BaseResponse.success(nuevoRol.idRol, constants_1.MensajeController.INSERTADO_OK));
     }
     catch (error) {
-        console.error(error);
+        console.error("Error insertarRol:", error);
         res.status(500).json(base_response_1.BaseResponse.error(error.message));
     }
 });
 exports.insertarRol = insertarRol;
-const listarRol = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+// Listar todos los roles
+const listarRoles = (_req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const roles = yield rolService.listarRol();
+        const roles = yield rolService.listarRoles();
         res.json(base_response_1.BaseResponse.success(roles, constants_1.MensajeController.CONSULTA_OK));
     }
     catch (error) {
-        console.error("Error listarRol:", error);
+        console.error("Error listarRoles:", error);
         res.status(500).json(base_response_1.BaseResponse.error(error.message));
     }
 });
-exports.listarRol = listarRol;
+exports.listarRoles = listarRoles;
+// Listar roles activos
+const listarRolesActivos = (_req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const roles = yield rolService.listarRolesActivos();
+        res.json(base_response_1.BaseResponse.success(roles, constants_1.MensajeController.CONSULTA_OK));
+    }
+    catch (error) {
+        console.error("Error listarRolesActivos:", error);
+        res.status(500).json(base_response_1.BaseResponse.error(error.message));
+    }
+});
+exports.listarRolesActivos = listarRolesActivos;
+// Actualizar rol
+const actualizarRol = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const idRol = parseInt(req.params.idRol);
+        const data = req.body;
+        yield rolService.actualizarRol(idRol, data);
+        res.json(base_response_1.BaseResponse.success(null, constants_1.MensajeController.ACTUALIZADO_OK));
+    }
+    catch (error) {
+        console.error("Error actualizarRol:", error);
+        res.status(500).json(base_response_1.BaseResponse.error(error.message));
+    }
+});
+exports.actualizarRol = actualizarRol;
+// Eliminar rol (soft delete)
+const eliminarRol = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const idRol = parseInt(req.params.idRol);
+        yield rolService.eliminarRol(idRol);
+        res.json(base_response_1.BaseResponse.success(null, constants_1.MensajeController.ELIMINADO_OK));
+    }
+    catch (error) {
+        console.error("Error eliminarRol:", error);
+        res.status(500).json(base_response_1.BaseResponse.error(error.message));
+    }
+});
+exports.eliminarRol = eliminarRol;
+// Activar rol
+const activarRol = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const idRol = parseInt(req.params.idRol);
+        yield rolService.activarRol(idRol);
+        res.json(base_response_1.BaseResponse.success(null, constants_1.MensajeController.ACTUALIZADO_OK));
+    }
+    catch (error) {
+        console.error("Error activarRol:", error);
+        res.status(500).json(base_response_1.BaseResponse.error(error.message));
+    }
+});
+exports.activarRol = activarRol;
 //# sourceMappingURL=rol.controller.js.map

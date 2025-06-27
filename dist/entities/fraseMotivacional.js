@@ -17,24 +17,24 @@ exports.FraseMotivacional = FraseMotivacional;
 __decorate([
     (0, typeorm_1.PrimaryGeneratedColumn)({ name: 'id_frase' }),
     __metadata("design:type", Number)
-], FraseMotivacional.prototype, "id_frase", void 0);
+], FraseMotivacional.prototype, "idFrase", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ name: 'frase' }),
+    (0, typeorm_1.Column)({ name: 'frase', type: 'varchar', length: 250 }),
     __metadata("design:type", String)
 ], FraseMotivacional.prototype, "frase", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ name: 'autor' }),
+    (0, typeorm_1.Column)({ name: 'autor', type: 'varchar', length: 250 }),
     __metadata("design:type", String)
 ], FraseMotivacional.prototype, "autor", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ name: 'fecha_creacion' }),
+    (0, typeorm_1.CreateDateColumn)({ name: 'fecha_creacion', type: 'datetime' }),
     __metadata("design:type", Date)
 ], FraseMotivacional.prototype, "fechaCreacion", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ name: 'estado_auditoria' }),
+    (0, typeorm_1.Column)({ name: 'estado_auditoria', type: 'bit', default: 1 }),
     __metadata("design:type", Boolean)
 ], FraseMotivacional.prototype, "estado", void 0);
 exports.FraseMotivacional = FraseMotivacional = __decorate([
-    (0, typeorm_1.Entity)('FraseMotivacional')
+    (0, typeorm_1.Entity)('FrasesMotivacionales')
 ], FraseMotivacional);
 //# sourceMappingURL=fraseMotivacional.js.map

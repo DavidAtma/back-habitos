@@ -19,18 +19,18 @@ __decorate([
     __metadata("design:type", Number)
 ], Rol.prototype, "idRol", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ name: 'nombre' }),
+    (0, typeorm_1.Column)({ name: 'nombre', type: 'varchar', length: 250, unique: true }),
     __metadata("design:type", String)
 ], Rol.prototype, "nombre", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ name: 'fecha_creacion' }),
-    __metadata("design:type", String)
-], Rol.prototype, "estadoAuditoria", void 0);
+    (0, typeorm_1.CreateDateColumn)({ name: 'fecha_creacion', type: 'datetime' }),
+    __metadata("design:type", Date)
+], Rol.prototype, "fechaCreacion", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ name: 'estado_auditoria' }),
-    __metadata("design:type", String)
+    (0, typeorm_1.Column)({ name: 'estado_auditoria', type: 'bit', default: 1 }),
+    __metadata("design:type", Boolean)
 ], Rol.prototype, "estado", void 0);
 exports.Rol = Rol = __decorate([
-    (0, typeorm_1.Entity)('Rol')
+    (0, typeorm_1.Entity)('Roles')
 ], Rol);
 //# sourceMappingURL=rol.js.map

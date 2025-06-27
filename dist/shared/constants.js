@@ -8,5 +8,6 @@ var MensajeController;
     MensajeController["ELIMINADO_OK"] = "Eliminado correctamente";
     MensajeController["NO_ENCONTRADO"] = "No encontrado";
     MensajeController["CONSULTA_OK"] = "Listado";
+    MensajeController["ACTIVADO_OK"] = "Activado correctamente";
 })(MensajeController || (exports.MensajeController = MensajeController = {}));
 //# sourceMappingURL=constants.js.map

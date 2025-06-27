@@ -25,42 +25,42 @@ __decorate([
     __metadata("design:type", rol_1.Rol)
 ], Usuario.prototype, "rol", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ name: 'nombre' }),
+    (0, typeorm_1.Column)({ name: 'nombre', type: 'varchar', length: 250 }),
     __metadata("design:type", String)
 ], Usuario.prototype, "nombre", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ name: 'apellido_paterno' }),
+    (0, typeorm_1.Column)({ name: 'apellido_paterno', type: 'varchar', length: 250 }),
     __metadata("design:type", String)
 ], Usuario.prototype, "apellidoPaterno", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ name: 'apellido_materno' }),
+    (0, typeorm_1.Column)({ name: 'apellido_materno', type: 'varchar', length: 250 }),
     __metadata("design:type", String)
 ], Usuario.prototype, "apellidoMaterno", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ name: 'correo' }),
+    (0, typeorm_1.Column)({ name: 'correo', type: 'varchar', length: 180, unique: true }),
     __metadata("design:type", String)
 ], Usuario.prototype, "correo", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ name: 'contrasena' }),
+    (0, typeorm_1.Column)({ name: 'contrasena', type: 'varchar', length: 256 }),
     __metadata("design:type", String)
 ], Usuario.prototype, "contrasena", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ name: 'fecha_nacimiento' }),
-    __metadata("design:type", String)
+    (0, typeorm_1.Column)({ name: 'fecha_nacimiento', type: 'date', nullable: true }),
+    __metadata("design:type", Date)
 ], Usuario.prototype, "fechaNacimiento", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ name: 'foto_perfil' }),
+    (0, typeorm_1.Column)({ name: 'foto_perfil', type: 'varchar', length: 1000 }),
     __metadata("design:type", String)
 ], Usuario.prototype, "fotoPerfil", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ name: 'fecha_creacion' }),
+    (0, typeorm_1.CreateDateColumn)({ name: 'fecha_creacion', type: 'datetime' }),
     __metadata("design:type", Date)
 ], Usuario.prototype, "fechaCreacion", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ name: 'estado_auditoria' }),
+    (0, typeorm_1.Column)({ name: 'estado_auditoria', type: 'bit', default: true }),
     __metadata("design:type", Boolean)
 ], Usuario.prototype, "estado", void 0);
 exports.Usuario = Usuario = __decorate([
-    (0, typeorm_1.Entity)('Usuario')
+    (0, typeorm_1.Entity)('Usuarios')
 ], Usuario);
 //# sourceMappingURL=usuario.js.map

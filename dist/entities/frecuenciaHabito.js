@@ -25,18 +25,18 @@ __decorate([
     __metadata("design:type", habito_1.Habito)
 ], FrecuenciaHabito.prototype, "habito", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ name: 'dia_semana' }),
+    (0, typeorm_1.Column)({ name: 'dia_semana', type: 'varchar', length: 20 }),
     __metadata("design:type", String)
 ], FrecuenciaHabito.prototype, "diaSemana", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ name: 'fecha_creacion' }),
+    (0, typeorm_1.CreateDateColumn)({ name: 'fecha_creacion', type: 'datetime' }),
     __metadata("design:type", Date)
 ], FrecuenciaHabito.prototype, "fechaCreacion", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ name: 'estado_auditoria' }),
+    (0, typeorm_1.Column)({ name: 'estado_auditoria', type: 'bit', default: 1 }),
     __metadata("design:type", Boolean)
 ], FrecuenciaHabito.prototype, "estado", void 0);
 exports.FrecuenciaHabito = FrecuenciaHabito = __decorate([
-    (0, typeorm_1.Entity)('FrecuenciaHabito')
+    (0, typeorm_1.Entity)('FrecuenciaHabitos')
 ], FrecuenciaHabito);
 //# sourceMappingURL=frecuenciaHabito.js.map

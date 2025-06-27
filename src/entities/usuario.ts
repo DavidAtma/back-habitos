@@ -19,13 +19,13 @@ export class Usuario {
   @Column({ name: 'apellido_materno', type: 'varchar', length: 250 })
   apellidoMaterno: string;
 
-  @Column({ name: 'correo', type: 'varchar', length: 180, unique: true }) // ← actualizado a 180
+  @Column({ name: 'correo', type: 'varchar', length: 180, unique: true }) 
   correo: string;
 
   @Column({ name: 'contrasena', type: 'varchar', length: 256 })
   contrasena: string;
 
-  @Column({ name: 'fecha_nacimiento', type: 'date', nullable: true }) // ← agregado nuevo campo
+  @Column({ name: 'fecha_nacimiento', type: 'date', nullable: true }) 
   fechaNacimiento: Date;
 
   @Column({ name: 'foto_perfil', type: 'varchar', length: 1000 })
