@@ -1,18 +1,25 @@
 import { Router } from "express";
 import * as categoriaController from "../controllers/categoria.controller";
+import { verificarJWT } from "../middlewares/auth.middleware";
 
 const router = Router();
 
 // POST /categorias
 router.post("/", categoriaController.insertarCategoria);
 
-// GET /categorias
+// GET /categorias (todas)
 router.get("/", categoriaController.listarCategorias);
 
-// PUT /categorias/:idCategoria
+// GET /categorias/activas
+router.get("/activas", categoriaController.listarCategoriasActivas);
+
+// PUT /categorias/:idCategoria (actualizar)
 router.put("/:idCategoria", categoriaController.actualizarCategoria);
 
-// DELETE /categorias/:idCategoria
+// PUT /categorias/activar/:idCategoria (activar una categoría)
+router.put("/activar/:idCategoria", categoriaController.activarCategoria);
+
+// DELETE /categorias/:idCategoria (desactivar una categoría)
 router.delete("/:idCategoria", categoriaController.eliminarCategoria);
 
 export default router;

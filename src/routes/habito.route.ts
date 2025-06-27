@@ -1,21 +1,28 @@
 import { Router } from "express";
 import * as habitoController from "../controllers/habito.controller";
+import { verificarJWT } from "../middlewares/auth.middleware";
 
 const router = Router();
 
-// Ruta: POST /habitos
+// POST /habitos
 router.post("/", habitoController.insertarHabito);
 
-// Ruta: GET /habitos
+// GET /habitos
 router.get("/", habitoController.listarHabitos);
 
-// Ruta: GET /habitos/usuario/:idUsuario
+// GET /habitos/activos
+router.get("/activos", habitoController.listarHabitosActivos);
+
+// GET /habitos/usuario/:idUsuario
 router.get("/usuario/:idUsuario", habitoController.listarHabitosPorUsuario);
 
-// Ruta: PUT /habitos/:idHabito
+// PUT /habitos/:idHabito
 router.put("/:idHabito", habitoController.actualizarHabito);
 
-// Ruta: DELETE /habitos/:idHabito
+// PATCH /habitos/activar/:idHabito
+router.patch("/activar/:idHabito", habitoController.activarHabito);
+
+// DELETE /habitos/:idHabito
 router.delete("/:idHabito", habitoController.eliminarHabito);
 
 export default router;

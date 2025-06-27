@@ -1,17 +1,17 @@
+import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn } from "typeorm";
 
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
-
-@Entity('FraseMotivacional')
+@Entity('FrasesMotivacionales')
 export class FraseMotivacional {
-     @PrimaryGeneratedColumn({name:'id_frase'})
-    id_frase: number;
-    @Column({name:'frase'})
+
+    @PrimaryGeneratedColumn({ name: 'id_frase' })
+    idFrase: number;
+    @Column({ name: 'frase', type: 'varchar', length: 250 })
     frase: string;
-    @Column({name: 'autor'})
+    @Column({ name: 'autor', type: 'varchar', length: 250 })
     autor: string;
-    @Column({name:'fecha_creacion'})
+    @CreateDateColumn({ name: 'fecha_creacion', type: 'datetime' })
     fechaCreacion: Date;
-    @Column({name:'estado_auditoria'})
+    @Column({ name: 'estado_auditoria', type: 'bit', default: 1 })
     estado: boolean;
 
 }

@@ -11,6 +11,20 @@ export const insertarRecordatorio = async (recordatorio: Partial<Recordatorio>):
     return await repository.save(recordatorio);
 };
 
+// Listar todos los recordatorios activos
+export const listarRecordatoriosActivos = async (): Promise<Recordatorio[]> => {
+    if (!AppDataSource.isInitialized) {
+        await AppDataSource.initialize();
+    }
+
+    const repository = AppDataSource.getRepository(Recordatorio);
+    return await repository.find({
+        relations: ['habito'],
+        where: { estado: true },
+        order: { idRecordatorio: "DESC" }
+    });
+};
+
 // Listar todos los recordatorios
 export const listarRecordatorios = async (): Promise<Recordatorio[]> => {
     if (!AppDataSource.isInitialized) {
@@ -32,7 +46,7 @@ export const listarRecordatoriosPorHabito = async (idHabito: number): Promise<Re
 
     const repository = AppDataSource.getRepository(Recordatorio);
     return await repository.find({
-        where: { habito: { idHabito } },
+        where: { habito: { idHabito }, estado: true },
         relations: ['habito'],
         order: { idRecordatorio: "DESC" }
     });
@@ -55,5 +69,15 @@ export const eliminarRecordatorio = async (idRecordatorio: number): Promise<void
     }
 
     const repository = AppDataSource.getRepository(Recordatorio);
-    await repository.delete({ idRecordatorio });
+    await repository.update({ idRecordatorio }, { estado: false });
+};
+
+// Activar recordatorio
+export const activarRecordatorio = async (idRecordatorio: number): Promise<void> => {
+    if (!AppDataSource.isInitialized) {
+        await AppDataSource.initialize();
+    }
+
+    const repository = AppDataSource.getRepository(Recordatorio);
+    await repository.update({ idRecordatorio }, { estado: true });
 };

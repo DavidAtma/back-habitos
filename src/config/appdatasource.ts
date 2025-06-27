@@ -12,13 +12,13 @@ import { Seguimiento } from '../entities/seguimiento';
 
 export const AppDataSource = new DataSource({
   type: 'mssql',
-  host: process.env.DB_HOST || 'DESKTOP-IERGM4D\\AMSSSQL',
+  host: process.env.DB_HOST || 'localhost',
   port: parseInt(process.env.DB_PORT as any, 10) || 1433,
   username: process.env.DB_USERNAME || 'sa',
-  password: process.env.DB_PASSWORD || '123',
-  database: process.env.DB_NAME || 'HabitFlow',
+  password: process.env.DB_PASSWORD || 'Yoku1510*',
+  database: process.env.DB_NAME || 'MisHabitos',
   synchronize: false,
-  logging: false, // Te ayuda a depurar las consultas
+  logging: false,
   entities: [
     Habito,
     Categoria,

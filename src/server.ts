@@ -1,7 +1,15 @@
-import app from './app';
+import app, { startServer } from './app';
 
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
-app.listen(3000, ()=> {
-    console.log(`Server is running on http://localhost:${PORT}`);
-});
+// Inicializa la base de datos y luego arranca el servidor
+startServer()
+    .then(() => {
+        app.listen(PORT, () => {
+            console.log(`Servidor iniciado en: http://localhost:${PORT}`);
+        });
+    })
+    .catch((error) => {
+        console.error("Error al iniciar el servidor:", error);
+        process.exit(1);
+    });

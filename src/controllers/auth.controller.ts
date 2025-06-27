@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import * as usuarioService from "../services/usuario.service";
+import * as authService from "../services/auth.service";
 import { BaseResponse } from "../shared/base-response";
 import { MensajeController } from "../shared/constants";
 
@@ -12,7 +12,7 @@ export const login = async (req: Request, res: Response): Promise<void> => {
     }
 
     try {
-        const usuario = await usuarioService.loginUsuario(correo, contrasena);
+        const usuario = await authService.login(correo, contrasena);
 
         if (!usuario) {
             res.status(404).json(BaseResponse.error("Usuario o contraseña incorrectos"));

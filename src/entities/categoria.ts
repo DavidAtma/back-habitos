@@ -1,16 +1,15 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn } from "typeorm";
 
-@Entity ('Categoria')
+@Entity('Categorias')
 export class Categoria {
-    
-    @PrimaryGeneratedColumn({name:'id_categoria'})
-    idCategoria:number;
 
-    @Column({name:'nombre'})
-        nombre: string;
-    @Column({name:'fecha_creacion'})
-        fechaCreacion: Date;
-    @Column({name:'estado_auditoria'})
-        estado: boolean;
+    @PrimaryGeneratedColumn({ name: 'id_categoria' })
+    idCategoria: number;
+    @Column({ name: 'nombre', type: 'varchar', length: 250 })
+    nombre: string;
+    @CreateDateColumn({ name: 'fecha_creacion', type: 'datetime' })
+    fechaCreacion: Date;
+    @Column({ name: 'estado_auditoria', type: 'bit', default: 1 })
+    estado: boolean;
 
 }

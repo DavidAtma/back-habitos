@@ -16,7 +16,7 @@ export const insertarUsuario = async (req: Request, res: Response) => {
     }
 };
 
-// Listar usuarios
+// Listar todos los usuarios
 export const listarUsuarios = async (_req: Request, res: Response) => {
     try {
         const usuarios = await usuarioService.listarUsuarios();
@@ -27,20 +27,37 @@ export const listarUsuarios = async (_req: Request, res: Response) => {
     }
 };
 
-// Buscar por correo
-export const buscarPorCorreo = async (req: Request, res: Response) => {
+// Listar usuarios activos
+export const listarUsuariosActivos = async (_req: Request, res: Response) => {
     try {
-        const { correo } = req.params;
+        const usuarios = await usuarioService.listarUsuariosActivos();
+        res.json(BaseResponse.success(usuarios, MensajeController.CONSULTA_OK));
+    } catch (error: any) {
+        console.error("Error listarUsuariosActivos:", error);
+        res.status(500).json(BaseResponse.error(error.message));
+    }
+};
+
+// Buscar usuario por correo
+/*export const buscarPorCorreo = async (req: Request, res: Response) => {
+    try {
+        const correo = req.query.correo as string;
+        if (!correo) {
+            return res.status(400).json(BaseResponse.error("Correo no proporcionado", 400));
+        }
+
         const usuario = await usuarioService.buscarUsuarioPorCorreo(correo);
         if (!usuario) {
             return res.status(404).json(BaseResponse.error(MensajeController.NO_ENCONTRADO, 404));
         }
+
         res.json(BaseResponse.success(usuario, MensajeController.CONSULTA_OK));
     } catch (error: any) {
         console.error("Error buscarPorCorreo:", error);
         res.status(500).json(BaseResponse.error(error.message));
     }
-};
+};*/
+
 
 // Actualizar usuario
 export const actualizarUsuario = async (req: Request, res: Response) => {
@@ -55,7 +72,7 @@ export const actualizarUsuario = async (req: Request, res: Response) => {
     }
 };
 
-// Eliminar usuario
+// Eliminar usuario (soft delete)
 export const eliminarUsuario = async (req: Request, res: Response) => {
     try {
         const idUsuario = parseInt(req.params.idUsuario);
@@ -67,21 +84,14 @@ export const eliminarUsuario = async (req: Request, res: Response) => {
     }
 };
 
-// Login de usuario
-export const loginUsuario = async (req: Request, res: Response) => {
+// Activar usuario
+export const activarUsuario = async (req: Request, res: Response) => {
     try {
-        const { correo, contrasena } = req.body;
-
-        const usuario = await usuarioService.loginUsuario(correo, contrasena);
-
-        if (!usuario) {
-            return res.status(401).json(BaseResponse.error("Credenciales inválidas", 401));
-        }
-
-        res.json(BaseResponse.success(usuario, "Login exitoso"));
+        const idUsuario = parseInt(req.params.idUsuario);
+        await usuarioService.activarUsuario(idUsuario);
+        res.json(BaseResponse.success(null, MensajeController.ACTUALIZADO_OK));
     } catch (error: any) {
-        console.error("Error loginUsuario:", error);
+        console.error("Error activarUsuario:", error);
         res.status(500).json(BaseResponse.error(error.message));
     }
 };
-

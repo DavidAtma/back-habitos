@@ -9,20 +9,31 @@ export const insertarFrase = async (req: Request, res: Response) => {
     try {
         const frase: Partial<FraseMotivacional> = req.body;
         const nuevaFrase = await fraseService.insertarFrase(frase);
-        res.json(BaseResponse.success(nuevaFrase.id_frase, MensajeController.INSERTADO_OK));
+        res.json(BaseResponse.success(nuevaFrase.idFrase, MensajeController.INSERTADO_OK));
     } catch (error: any) {
         console.error("Error insertarFrase:", error);
         res.status(500).json(BaseResponse.error(error.message));
     }
 };
 
-// Listar frases
+// Listar todas las frases
 export const listarFrases = async (_req: Request, res: Response) => {
     try {
         const frases = await fraseService.listarFrases();
         res.json(BaseResponse.success(frases, MensajeController.CONSULTA_OK));
     } catch (error: any) {
         console.error("Error listarFrases:", error);
+        res.status(500).json(BaseResponse.error(error.message));
+    }
+};
+
+// Listar solo frases activas
+export const listarFrasesActivas = async (_req: Request, res: Response) => {
+    try {
+        const frases = await fraseService.listarFrasesActivas();
+        res.json(BaseResponse.success(frases, MensajeController.CONSULTA_OK));
+    } catch (error: any) {
+        console.error("Error listarFrasesActivas:", error);
         res.status(500).json(BaseResponse.error(error.message));
     }
 };
@@ -40,7 +51,7 @@ export const actualizarFrase = async (req: Request, res: Response) => {
     }
 };
 
-// Eliminar frase
+// Eliminar frase (desactivar)
 export const eliminarFrase = async (req: Request, res: Response) => {
     try {
         const idFrase = parseInt(req.params.idFrase);
@@ -48,6 +59,18 @@ export const eliminarFrase = async (req: Request, res: Response) => {
         res.json(BaseResponse.success(null, MensajeController.ELIMINADO_OK));
     } catch (error: any) {
         console.error("Error eliminarFrase:", error);
+        res.status(500).json(BaseResponse.error(error.message));
+    }
+};
+
+// Activar frase
+export const activarFrase = async (req: Request, res: Response) => {
+    try {
+        const idFrase = parseInt(req.params.idFrase);
+        await fraseService.activarFrase(idFrase);
+        res.json(BaseResponse.success(null, MensajeController.ACTUALIZADO_OK));
+    } catch (error: any) {
+        console.error("Error activarFrase:", error);
         res.status(500).json(BaseResponse.error(error.message));
     }
 };

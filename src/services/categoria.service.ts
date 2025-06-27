@@ -11,6 +11,19 @@ export const insertarCategoria = async (categoria: Partial<Categoria>): Promise<
     return await repository.save(categoria);
 };
 
+// Listar todas las categorías activas
+export const listarCategoriasActivas = async (): Promise<Categoria[]> => {
+    if (!AppDataSource.isInitialized) {
+        await AppDataSource.initialize();
+    }
+
+    const repository = AppDataSource.getRepository(Categoria);
+    return await repository.find({
+        where: { estado: true },
+        order: { idCategoria: "DESC" }
+    });
+};
+
 // Listar todas las categorías
 export const listarCategorias = async (): Promise<Categoria[]> => {
     if (!AppDataSource.isInitialized) {
@@ -40,5 +53,15 @@ export const eliminarCategoria = async (idCategoria: number): Promise<void> => {
     }
 
     const repository = AppDataSource.getRepository(Categoria);
-    await repository.delete({ idCategoria });
+    await repository.update({ idCategoria }, { estado: false });
+};
+
+// Activar categoría
+export const activarCategoria = async (idCategoria: number): Promise<void> => {
+    if (!AppDataSource.isInitialized) {
+        await AppDataSource.initialize();
+    }
+
+    const repository = AppDataSource.getRepository(Categoria);
+    await repository.update({ idCategoria }, { estado: true });
 };

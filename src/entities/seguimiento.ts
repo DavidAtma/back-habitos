@@ -1,27 +1,23 @@
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Habito } from "./habito";
 
-@Entity('Seguimiento')
-export class Seguimiento{
+@Entity('Seguimientos')
+export class Seguimiento {
 
-    @PrimaryGeneratedColumn({name:'id_seguimiento'})
-    
-    idFrecuencia: number;
-
-     @ManyToOne(()=>Habito, (habito)=> habito.idHabito)
-     @JoinColumn({name:'id_habito'})
-        habito:Habito
-        
-@Column({ name: 'fecha'})
+    @PrimaryGeneratedColumn({ name: 'id_seguimiento' })
+    idSeguimiento: number;
+    @ManyToOne(() => Habito, (habito) => habito.idHabito)
+    @JoinColumn({ name: 'id_habito' })
+    habito: Habito
+    @Column({ name: 'fecha', type: 'date' })
     fecha: Date;
-@Column({ name: 'completado'})
+    @Column({ name: 'completado' })
     completado: boolean;
-@Column({ name: 'nota_dia'})
+    @Column({ name: 'nota_dia', type: 'varchar', length: 250 })
     notaDia: string;
-    @Column({ name: 'fecha_registro'})
-    fechaRegistro: Date;
-    @Column({ name: 'fecha_creacion'})
+    @CreateDateColumn({ name: 'fecha_creacion', type: 'datetime' })
     fechaCreacion: Date;
-    @Column({ name: 'estado_auditoria'})
+    @Column({ name: 'estado_auditoria', type: 'bit', default: 1 })
     estado: boolean;
+
 }

@@ -11,6 +11,20 @@ export const insertarFrecuencia = async (frecuencia: Partial<FrecuenciaHabito>):
     return await repository.save(frecuencia);
 };
 
+// Listar todas las frecuencias activas
+export const listarFrecuenciasActivas = async (): Promise<FrecuenciaHabito[]> => {
+    if (!AppDataSource.isInitialized) {
+        await AppDataSource.initialize();
+    }
+
+    const repository = AppDataSource.getRepository(FrecuenciaHabito);
+    return await repository.find({
+        relations: ['habito'],
+        where: { estado: true },
+        order: { idFrecuencia: "DESC" }
+    });
+};
+
 // Listar todas las frecuencias
 export const listarFrecuencias = async (): Promise<FrecuenciaHabito[]> => {
     if (!AppDataSource.isInitialized) {
@@ -32,7 +46,7 @@ export const listarFrecuenciasPorHabito = async (idHabito: number): Promise<Frec
 
     const repository = AppDataSource.getRepository(FrecuenciaHabito);
     return await repository.find({
-        where: { habito: { idHabito } },
+        where: { habito: { idHabito }, estado: true },
         relations: ['habito'],
         order: { idFrecuencia: "DESC" }
     });
@@ -55,5 +69,15 @@ export const eliminarFrecuencia = async (idFrecuencia: number): Promise<void> =>
     }
 
     const repository = AppDataSource.getRepository(FrecuenciaHabito);
-    await repository.delete({ idFrecuencia });
+    await repository.update({ idFrecuencia }, { estado: false });
+};
+
+// Activar frecuencia
+export const activarFrecuencia = async (idFrecuencia: number): Promise<void> => {  
+    if (!AppDataSource.isInitialized) {
+        await AppDataSource.initialize();
+    }
+
+    const repository = AppDataSource.getRepository(FrecuenciaHabito);
+    await repository.update({ idFrecuencia }, { estado: true });
 };

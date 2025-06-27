@@ -27,7 +27,18 @@ export const listarFrecuencias = async (_req: Request, res: Response) => {
     }
 };
 
-// Listar por hábito
+// Listar todas las frecuencias activas
+export const listarFrecuenciasActivas = async (_req: Request, res: Response) => {
+    try {
+        const frecuencias = await frecuenciaService.listarFrecuenciasActivas();
+        res.json(BaseResponse.success(frecuencias, MensajeController.CONSULTA_OK));
+    } catch (error: any) {
+        console.error("Error listarFrecuenciasActivas:", error);
+        res.status(500).json(BaseResponse.error(error.message));
+    }
+};
+
+// Listar frecuencias por hábito
 export const listarFrecuenciasPorHabito = async (req: Request, res: Response) => {
     try {
         const idHabito = parseInt(req.params.idHabito);
@@ -52,7 +63,7 @@ export const actualizarFrecuencia = async (req: Request, res: Response) => {
     }
 };
 
-// Eliminar frecuencia
+// Eliminar frecuencia (soft delete)
 export const eliminarFrecuencia = async (req: Request, res: Response) => {
     try {
         const idFrecuencia = parseInt(req.params.idFrecuencia);
@@ -60,6 +71,18 @@ export const eliminarFrecuencia = async (req: Request, res: Response) => {
         res.json(BaseResponse.success(null, MensajeController.ELIMINADO_OK));
     } catch (error: any) {
         console.error("Error eliminarFrecuencia:", error);
+        res.status(500).json(BaseResponse.error(error.message));
+    }
+};
+
+// Activar frecuencia
+export const activarFrecuencia = async (req: Request, res: Response) => {
+    try {
+        const idFrecuencia = parseInt(req.params.idFrecuencia);
+        await frecuenciaService.activarFrecuencia(idFrecuencia);
+        res.json(BaseResponse.success(null, MensajeController.ACTUALIZADO_OK));
+    } catch (error: any) {
+        console.error("Error activarFrecuencia:", error);
         res.status(500).json(BaseResponse.error(error.message));
     }
 };

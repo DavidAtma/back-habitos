@@ -16,13 +16,24 @@ export const insertarRecordatorio = async (req: Request, res: Response) => {
     }
 };
 
-// Listar recordatorios
+// Listar todos los recordatorios
 export const listarRecordatorios = async (_req: Request, res: Response) => {
     try {
         const recordatorios = await recordatorioService.listarRecordatorios();
         res.json(BaseResponse.success(recordatorios, MensajeController.CONSULTA_OK));
     } catch (error: any) {
         console.error("Error listarRecordatorios:", error);
+        res.status(500).json(BaseResponse.error(error.message));
+    }
+};
+
+// Listar recordatorios activos
+export const listarRecordatoriosActivos = async (_req: Request, res: Response) => {
+    try {
+        const recordatorios = await recordatorioService.listarRecordatoriosActivos();
+        res.json(BaseResponse.success(recordatorios, MensajeController.CONSULTA_OK));
+    } catch (error: any) {
+        console.error("Error listarRecordatoriosActivos:", error);
         res.status(500).json(BaseResponse.error(error.message));
     }
 };
@@ -52,7 +63,7 @@ export const actualizarRecordatorio = async (req: Request, res: Response) => {
     }
 };
 
-// Eliminar recordatorio
+// Eliminar recordatorio (soft delete)
 export const eliminarRecordatorio = async (req: Request, res: Response) => {
     try {
         const idRecordatorio = parseInt(req.params.idRecordatorio);
@@ -60,6 +71,18 @@ export const eliminarRecordatorio = async (req: Request, res: Response) => {
         res.json(BaseResponse.success(null, MensajeController.ELIMINADO_OK));
     } catch (error: any) {
         console.error("Error eliminarRecordatorio:", error);
+        res.status(500).json(BaseResponse.error(error.message));
+    }
+};
+
+// Activar recordatorio
+export const activarRecordatorio = async (req: Request, res: Response) => {
+    try {
+        const idRecordatorio = parseInt(req.params.idRecordatorio);
+        await recordatorioService.activarRecordatorio(idRecordatorio);
+        res.json(BaseResponse.success(null, MensajeController.ACTUALIZADO_OK));
+    } catch (error: any) {
+        console.error("Error activarRecordatorio:", error);
         res.status(500).json(BaseResponse.error(error.message));
     }
 };

@@ -1,5 +1,6 @@
 import { AppDataSource } from "../config/appdatasource";
 import { Usuario } from "../entities/usuario";
+import * as bcrypt from 'bcryptjs';
 
 // Insertar usuario
 export const insertarUsuario = async (usuario: Partial<Usuario>): Promise<Usuario> => {
@@ -8,7 +9,27 @@ export const insertarUsuario = async (usuario: Partial<Usuario>): Promise<Usuari
     }
 
     const repository = AppDataSource.getRepository(Usuario);
+
+    // Hashear la contraseña si existe
+    if (usuario.contrasena) {
+        usuario.contrasena = await bcrypt.hash(usuario.contrasena, 10);
+    }
+
     return await repository.save(usuario);
+};
+
+// Listar todos los usuarios activos
+export const listarUsuariosActivos = async (): Promise<Usuario[]> => {
+    if (!AppDataSource.isInitialized) {
+        await AppDataSource.initialize();
+    }
+
+    const repository = AppDataSource.getRepository(Usuario);
+    return await repository.find({
+        relations: ['rol'],
+        where: { estado: true },
+        order: { idUsuario: "DESC" }
+    });
 };
 
 // Listar todos los usuarios
@@ -25,17 +46,20 @@ export const listarUsuarios = async (): Promise<Usuario[]> => {
 };
 
 // Buscar usuario por correo
-export const buscarUsuarioPorCorreo = async (correo: string): Promise<Usuario | null> => {
+/*export const buscarUsuarioPorCorreo = async (correo: string): Promise<Usuario | null> => {
     if (!AppDataSource.isInitialized) {
         await AppDataSource.initialize();
     }
 
     const repository = AppDataSource.getRepository(Usuario);
     return await repository.findOne({
-        where: { correo },
+        where: {
+            correo: correo.trim().toLowerCase(),
+            estado: true
+        },
         relations: ['rol']
     });
-};
+};*/
 
 // Actualizar usuario
 export const actualizarUsuario = async (idUsuario: number, data: Partial<Usuario>): Promise<void> => {
@@ -44,6 +68,12 @@ export const actualizarUsuario = async (idUsuario: number, data: Partial<Usuario
     }
 
     const repository = AppDataSource.getRepository(Usuario);
+
+    // Hashear la nueva contraseña si está presente
+    if (data.contrasena) {
+        data.contrasena = await bcrypt.hash(data.contrasena, 10);
+    }
+
     await repository.update({ idUsuario }, data);
 };
 
@@ -54,27 +84,15 @@ export const eliminarUsuario = async (idUsuario: number): Promise<void> => {
     }
 
     const repository = AppDataSource.getRepository(Usuario);
-    await repository.delete({ idUsuario });
+    await repository.update({ idUsuario }, { estado: false });
 };
 
-// Login de usuario
-export const loginUsuario = async (correo: string, contrasena: string) => {
-  if (!AppDataSource.isInitialized) {
-    await AppDataSource.initialize(); // Esto previene el error si aún no se inicializó
-  }
+// Activar usuario
+export const activarUsuario = async (idUsuario: number): Promise<void> => {
+    if (!AppDataSource.isInitialized) {
+        await AppDataSource.initialize();
+    }
 
-  const repo = AppDataSource.getRepository(Usuario);
-
-  try {
-    const usuario = await repo.findOne({
-      where: { correo, contrasena },
-      relations: ['rol'],
-    });
-
-    return usuario;
-  } catch (error) {
-    console.error("Error en loginUsuario:", error);
-    throw new Error("Error al buscar usuario");
-  }
+    const repository = AppDataSource.getRepository(Usuario);
+    await repository.update({ idUsuario }, { estado: true });
 };
-
