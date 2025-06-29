@@ -35,18 +35,19 @@ var __importStar = (this && this.__importStar) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const rolController = __importStar(require("../controllers/rol.controller"));
+const auth_middleware_1 = require("../middlewares/auth.middleware");
 const router = (0, express_1.Router)();
 // POST /roles
-router.post("/", rolController.insertarRol);
+router.post("/", auth_middleware_1.verificarJWT, rolController.insertarRol);
 // GET /roles
-router.get("/", rolController.listarRoles);
+router.get("/", auth_middleware_1.verificarJWT, rolController.listarRoles);
 // GET /roles/activos
-router.get("/activos", rolController.listarRolesActivos);
+router.get("/activos", auth_middleware_1.verificarJWT, rolController.listarRolesActivos);
 // PUT /roles/:idRol
-router.put("/:idRol", rolController.actualizarRol);
+router.put("/:idRol", auth_middleware_1.verificarJWT, rolController.actualizarRol);
 // PUT /roles/activar/:idRol
-router.put("/activar/:idRol", rolController.activarRol);
+router.put("/activar/:idRol", auth_middleware_1.verificarJWT, rolController.activarRol);
 // DELETE /roles/:idRol
-router.delete("/:idRol", rolController.eliminarRol);
+router.delete("/:idRol", auth_middleware_1.verificarJWT, rolController.eliminarRol);
 exports.default = router;
 //# sourceMappingURL=rol.route.js.map

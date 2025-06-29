@@ -35,22 +35,23 @@ var __importStar = (this && this.__importStar) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const seguimientoController = __importStar(require("../controllers/seguimiento.controller"));
+const auth_middleware_1 = require("../middlewares/auth.middleware");
 const router = (0, express_1.Router)();
 // POST /seguimientos
-router.post("/", seguimientoController.insertarSeguimiento);
+router.post("/", auth_middleware_1.verificarJWT, seguimientoController.insertarSeguimiento);
 // GET /seguimientos/activos
-router.get("/activos", seguimientoController.listarSeguimientosActivos);
+router.get("/activos", auth_middleware_1.verificarJWT, seguimientoController.listarSeguimientosActivos);
 // GET /seguimientos
-router.get("/", seguimientoController.listarSeguimientos);
+router.get("/", auth_middleware_1.verificarJWT, seguimientoController.listarSeguimientos);
 // GET /seguimientos/habito/:idHabito
-router.get("/habito/:idHabito", seguimientoController.listarSeguimientosPorHabito);
+router.get("/habito/:idHabito", auth_middleware_1.verificarJWT, seguimientoController.listarSeguimientosPorHabito);
 // Nuevo GET /seguimientos/usuario/:idUsuario/fecha/:fecha
-router.get("/usuario/:idUsuario/fecha/:fecha", seguimientoController.listarSeguimientosPorUsuarioYFecha);
-// PUT /seguimientos/:idSeguimiento (cambiar de idFrecuencia a idSeguimiento)
-router.put("/:idSeguimiento", seguimientoController.actualizarSeguimiento);
+router.get("/usuario/:idUsuario/fecha/:fecha", auth_middleware_1.verificarJWT, seguimientoController.listarSeguimientosPorUsuarioYFecha);
+// PUT /seguimientos/:idSeguimiento
+router.put("/:idSeguimiento", auth_middleware_1.verificarJWT, seguimientoController.actualizarSeguimiento);
 // PUT /seguimientos/activar/:idSeguimiento
-router.put("/activar/:idSeguimiento", seguimientoController.activarSeguimiento);
-// DELETE /seguimientos/:idSeguimiento (cambiar de idFrecuencia a idSeguimiento)
-router.delete("/:idSeguimiento", seguimientoController.eliminarSeguimiento);
+router.put("/activar/:idSeguimiento", auth_middleware_1.verificarJWT, seguimientoController.activarSeguimiento);
+// DELETE /seguimientos/:idSeguimiento
+router.delete("/:idSeguimiento", auth_middleware_1.verificarJWT, seguimientoController.eliminarSeguimiento);
 exports.default = router;
 //# sourceMappingURL=seguimiento.route.js.map

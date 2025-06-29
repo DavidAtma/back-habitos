@@ -3,6 +3,7 @@ import * as usuarioService from "../services/usuario.service";
 import { BaseResponse } from "../shared/base-response";
 import { MensajeController } from "../shared/constants";
 import { Usuario } from "../entities/usuario";
+import AppDataSource from "../config/appdatasource";
 
 // Insertar usuario
 export const insertarUsuario = async (req: Request, res: Response) => {
@@ -94,4 +95,46 @@ export const activarUsuario = async (req: Request, res: Response) => {
         console.error("Error activarUsuario:", error);
         res.status(500).json(BaseResponse.error(error.message));
     }
+};
+
+export const obtenerUsuarioPorId = async (req: Request, res: Response): Promise<void> => {
+  const id = parseInt(req.params.id);
+
+  if (isNaN(id)) {
+    res.status(400).json({
+      success: false,
+      message: "ID inválido",
+      data: null
+    });
+    return;
+  }
+
+  try {
+    const usuario = await AppDataSource.getRepository(Usuario).findOne({
+      where: { idUsuario: id },
+      relations: ["rol"]
+    });
+
+    if (!usuario) {
+      res.status(404).json({
+        success: false,
+        message: "Usuario no encontrado",
+        data: null
+      });
+      return;
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Usuario encontrado",
+      data: usuario
+    });
+  } catch (error) {
+    console.error("Error al obtener usuario:", error);
+    res.status(500).json({
+      success: false,
+      message: "Error interno del servidor",
+      data: null
+    });
+  }
 };

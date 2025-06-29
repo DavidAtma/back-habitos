@@ -4,22 +4,13 @@ import { verificarJWT } from "../middlewares/auth.middleware";
 
 const router = Router();
 
-// POST /frases
-router.post("/", fraseController.insertarFrase);
-
-// GET /frases
-router.get("/", fraseController.listarFrases);
-
-// GET /frases/activas
-router.get("/activas", fraseController.listarFrasesActivas);
-
-// PUT /frases/:idFrase
-router.put("/:idFrase", fraseController.actualizarFrase);
-
-// DELETE /frases/:idFrase (desactiva)
-router.delete("/:idFrase", fraseController.eliminarFrase);
-
-// PUT /frases/activar/:idFrase (reactiva)
-router.put("/activar/:idFrase", fraseController.activarFrase);
+// Protegemos TODAS las rutas con verificarJWT
+router.post("/", verificarJWT, fraseController.insertarFrase);
+router.get("/", verificarJWT, fraseController.listarFrases);
+router.get("/activas", verificarJWT, fraseController.listarFrasesActivas);
+router.put("/:idFrase", verificarJWT, fraseController.actualizarFrase);
+router.delete("/:idFrase", verificarJWT, fraseController.eliminarFrase);
+router.put("/activar/:idFrase", verificarJWT, fraseController.activarFrase);
 
 export default router;
+

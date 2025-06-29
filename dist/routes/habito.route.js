@@ -35,20 +35,21 @@ var __importStar = (this && this.__importStar) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const habitoController = __importStar(require("../controllers/habito.controller"));
+const auth_middleware_1 = require("../middlewares/auth.middleware");
 const router = (0, express_1.Router)();
 // POST /habitos
-router.post("/", habitoController.insertarHabito);
+router.post("/", auth_middleware_1.verificarJWT, habitoController.insertarHabito);
 // GET /habitos
-router.get("/", habitoController.listarHabitos);
+router.get("/", auth_middleware_1.verificarJWT, habitoController.listarHabitos);
 // GET /habitos/activos
-router.get("/activos", habitoController.listarHabitosActivos);
+router.get("/activos", auth_middleware_1.verificarJWT, habitoController.listarHabitosActivos);
 // GET /habitos/usuario/:idUsuario
-router.get("/usuario/:idUsuario", habitoController.listarHabitosPorUsuario);
+router.get("/usuario/:idUsuario", auth_middleware_1.verificarJWT, habitoController.listarHabitosPorUsuario);
 // PUT /habitos/:idHabito
-router.put("/:idHabito", habitoController.actualizarHabito);
+router.put("/:idHabito", auth_middleware_1.verificarJWT, habitoController.actualizarHabito);
 // PATCH /habitos/activar/:idHabito
-router.patch("/activar/:idHabito", habitoController.activarHabito);
+router.patch("/activar/:idHabito", auth_middleware_1.verificarJWT, habitoController.activarHabito);
 // DELETE /habitos/:idHabito
-router.delete("/:idHabito", habitoController.eliminarHabito);
+router.delete("/:idHabito", auth_middleware_1.verificarJWT, habitoController.eliminarHabito);
 exports.default = router;
 //# sourceMappingURL=habito.route.js.map

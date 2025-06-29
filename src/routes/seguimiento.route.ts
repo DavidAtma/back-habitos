@@ -5,27 +5,27 @@ import { verificarJWT } from "../middlewares/auth.middleware";
 const router = Router();
 
 // POST /seguimientos
-router.post("/", seguimientoController.insertarSeguimiento);
+router.post("/", verificarJWT, seguimientoController.insertarSeguimiento);
 
 // GET /seguimientos/activos
-router.get("/activos", seguimientoController.listarSeguimientosActivos);
+router.get("/activos", verificarJWT, seguimientoController.listarSeguimientosActivos);
 
 // GET /seguimientos
-router.get("/", seguimientoController.listarSeguimientos);
+router.get("/", verificarJWT, seguimientoController.listarSeguimientos);
 
 // GET /seguimientos/habito/:idHabito
-router.get("/habito/:idHabito", seguimientoController.listarSeguimientosPorHabito);
+router.get("/habito/:idHabito", verificarJWT, seguimientoController.listarSeguimientosPorHabito);
 
 // Nuevo GET /seguimientos/usuario/:idUsuario/fecha/:fecha
-router.get("/usuario/:idUsuario/fecha/:fecha", seguimientoController.listarSeguimientosPorUsuarioYFecha);
+router.get("/usuario/:idUsuario/fecha/:fecha", verificarJWT, seguimientoController.listarSeguimientosPorUsuarioYFecha);
 
-// PUT /seguimientos/:idSeguimiento (cambiar de idFrecuencia a idSeguimiento)
-router.put("/:idSeguimiento", seguimientoController.actualizarSeguimiento);
+// PUT /seguimientos/:idSeguimiento
+router.put("/:idSeguimiento", verificarJWT, seguimientoController.actualizarSeguimiento);
 
 // PUT /seguimientos/activar/:idSeguimiento
-router.put("/activar/:idSeguimiento", seguimientoController.activarSeguimiento);
+router.put("/activar/:idSeguimiento", verificarJWT, seguimientoController.activarSeguimiento);
 
-// DELETE /seguimientos/:idSeguimiento (cambiar de idFrecuencia a idSeguimiento)
-router.delete("/:idSeguimiento", seguimientoController.eliminarSeguimiento);
+// DELETE /seguimientos/:idSeguimiento
+router.delete("/:idSeguimiento", verificarJWT, seguimientoController.eliminarSeguimiento);
 
 export default router;

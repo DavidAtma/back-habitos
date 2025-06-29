@@ -5,24 +5,24 @@ import { verificarJWT } from "../middlewares/auth.middleware";
 const router = Router();
 
 // POST /habitos
-router.post("/", habitoController.insertarHabito);
+router.post("/", verificarJWT, habitoController.insertarHabito);
 
 // GET /habitos
-router.get("/", habitoController.listarHabitos);
+router.get("/", verificarJWT, habitoController.listarHabitos);
 
 // GET /habitos/activos
-router.get("/activos", habitoController.listarHabitosActivos);
+router.get("/activos", verificarJWT, habitoController.listarHabitosActivos);
 
 // GET /habitos/usuario/:idUsuario
-router.get("/usuario/:idUsuario", habitoController.listarHabitosPorUsuario);
+router.get("/usuario/:idUsuario", verificarJWT, habitoController.listarHabitosPorUsuario);
 
 // PUT /habitos/:idHabito
-router.put("/:idHabito", habitoController.actualizarHabito);
+router.put("/:idHabito", verificarJWT, habitoController.actualizarHabito);
 
 // PATCH /habitos/activar/:idHabito
-router.patch("/activar/:idHabito", habitoController.activarHabito);
+router.patch("/activar/:idHabito", verificarJWT, habitoController.activarHabito);
 
 // DELETE /habitos/:idHabito
-router.delete("/:idHabito", habitoController.eliminarHabito);
+router.delete("/:idHabito", verificarJWT, habitoController.eliminarHabito);
 
 export default router;

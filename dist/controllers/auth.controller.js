@@ -45,6 +45,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.login = void 0;
 const authService = __importStar(require("../services/auth.service"));
 const base_response_1 = require("../shared/base-response");
+const jwt_utils_1 = require("../shared/jwt.utils");
 const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { correo, contrasena } = req.body;
     if (!correo || !contrasena) {
@@ -57,7 +58,16 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             res.status(404).json(base_response_1.BaseResponse.error("Usuario o contraseña incorrectos"));
             return;
         }
-        res.status(200).json(base_response_1.BaseResponse.success(usuario, "Inicio de sesión exitoso"));
+        // Generar el token
+        const token = (0, jwt_utils_1.generarToken)(usuario);
+        res.status(200).json(base_response_1.BaseResponse.success({
+            token,
+            usuario: {
+                idUsuario: usuario.idUsuario,
+                correo: usuario.correo,
+                rol: usuario.rol.nombre
+            }
+        }, "Inicio de sesión exitoso"));
     }
     catch (error) {
         console.error("Error en login:", error);

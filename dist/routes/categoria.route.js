@@ -35,18 +35,19 @@ var __importStar = (this && this.__importStar) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const categoriaController = __importStar(require("../controllers/categoria.controller"));
+const auth_middleware_1 = require("../middlewares/auth.middleware");
 const router = (0, express_1.Router)();
 // POST /categorias
-router.post("/", categoriaController.insertarCategoria);
+router.post("/", auth_middleware_1.verificarJWT, categoriaController.insertarCategoria);
 // GET /categorias (todas)
-router.get("/", categoriaController.listarCategorias);
+router.get("/", auth_middleware_1.verificarJWT, categoriaController.listarCategorias);
 // GET /categorias/activas
-router.get("/activas", categoriaController.listarCategoriasActivas);
+router.get("/activas", auth_middleware_1.verificarJWT, categoriaController.listarCategoriasActivas);
 // PUT /categorias/:idCategoria (actualizar)
-router.put("/:idCategoria", categoriaController.actualizarCategoria);
+router.put("/:idCategoria", auth_middleware_1.verificarJWT, categoriaController.actualizarCategoria);
 // PUT /categorias/activar/:idCategoria (activar una categoría)
-router.put("/activar/:idCategoria", categoriaController.activarCategoria);
+router.put("/activar/:idCategoria", auth_middleware_1.verificarJWT, categoriaController.activarCategoria);
 // DELETE /categorias/:idCategoria (desactivar una categoría)
-router.delete("/:idCategoria", categoriaController.eliminarCategoria);
+router.delete("/:idCategoria", auth_middleware_1.verificarJWT, categoriaController.eliminarCategoria);
 exports.default = router;
 //# sourceMappingURL=categoria.route.js.map

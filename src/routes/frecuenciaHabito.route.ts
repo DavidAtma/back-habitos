@@ -5,24 +5,24 @@ import { verificarJWT } from "../middlewares/auth.middleware";
 const router = Router();
 
 // POST /frecuencias
-router.post("/", frecuenciaController.insertarFrecuencia);
+router.post("/", verificarJWT, frecuenciaController.insertarFrecuencia);
 
 // GET /frecuencias
-router.get("/", frecuenciaController.listarFrecuencias);
+router.get("/", verificarJWT, frecuenciaController.listarFrecuencias);
 
 // GET /frecuencias/activas
-router.get("/activas", frecuenciaController.listarFrecuenciasActivas);
+router.get("/activas", verificarJWT, frecuenciaController.listarFrecuenciasActivas);
 
 // GET /frecuencias/habito/:idHabito
-router.get("/habito/:idHabito", frecuenciaController.listarFrecuenciasPorHabito);
+router.get("/habito/:idHabito", verificarJWT, frecuenciaController.listarFrecuenciasPorHabito);
 
 // PUT /frecuencias/:idFrecuencia
-router.put("/:idFrecuencia", frecuenciaController.actualizarFrecuencia);
+router.put("/:idFrecuencia", verificarJWT, frecuenciaController.actualizarFrecuencia);
 
 // DELETE /frecuencias/:idFrecuencia
-router.delete("/:idFrecuencia", frecuenciaController.eliminarFrecuencia);
+router.delete("/:idFrecuencia", verificarJWT, frecuenciaController.eliminarFrecuencia);
 
 // PATCH /frecuencias/activar/:idFrecuencia
-router.patch("/activar/:idFrecuencia", frecuenciaController.activarFrecuencia);
+router.patch("/activar/:idFrecuencia", verificarJWT, frecuenciaController.activarFrecuencia);
 
 export default router;

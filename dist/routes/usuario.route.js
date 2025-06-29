@@ -35,20 +35,21 @@ var __importStar = (this && this.__importStar) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const usuarioController = __importStar(require("../controllers/usuario.controller"));
+const auth_middleware_1 = require("../middlewares/auth.middleware");
 const router = (0, express_1.Router)();
 // POST /usuarios
-router.post("/", usuarioController.insertarUsuario);
+router.post("/", auth_middleware_1.verificarJWT, usuarioController.insertarUsuario);
 // GET /usuarios
-router.get("/", usuarioController.listarUsuarios);
+router.get("/", auth_middleware_1.verificarJWT, usuarioController.listarUsuarios);
 // GET /usuarios/activos
-router.get("/activos", usuarioController.listarUsuariosActivos);
+router.get("/activos", auth_middleware_1.verificarJWT, usuarioController.listarUsuariosActivos);
 // GET /usuarios/correo/:correo
-//router.get("/correo", usuarioController.buscarPorCorreo);
+// router.get("/correo", verificarJWT, usuarioController.buscarPorCorreo);
 // PUT /usuarios/:idUsuario
-router.put("/:idUsuario", usuarioController.actualizarUsuario);
+router.put("/:idUsuario", auth_middleware_1.verificarJWT, usuarioController.actualizarUsuario);
 // PUT /usuarios/activar/:idUsuario
-router.put("/activar/:idUsuario", usuarioController.activarUsuario);
+router.put("/activar/:idUsuario", auth_middleware_1.verificarJWT, usuarioController.activarUsuario);
 // DELETE /usuarios/:idUsuario
-router.delete("/:idUsuario", usuarioController.eliminarUsuario);
+router.delete("/:idUsuario", auth_middleware_1.verificarJWT, usuarioController.eliminarUsuario);
 exports.default = router;
 //# sourceMappingURL=usuario.route.js.map

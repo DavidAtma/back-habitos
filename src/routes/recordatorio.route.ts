@@ -5,24 +5,24 @@ import { verificarJWT } from "../middlewares/auth.middleware";
 const router = Router();
 
 // POST /recordatorios
-router.post("/", recordatorioController.insertarRecordatorio);
+router.post("/", verificarJWT, recordatorioController.insertarRecordatorio);
 
 // GET /recordatorios
-router.get("/", recordatorioController.listarRecordatorios);
+router.get("/", verificarJWT, recordatorioController.listarRecordatorios);
 
 // GET /recordatorios/activos
-router.get("/activos", recordatorioController.listarRecordatoriosActivos);
+router.get("/activos", verificarJWT, recordatorioController.listarRecordatoriosActivos);
 
 // GET /recordatorios/habito/:idHabito
-router.get("/habito/:idHabito", recordatorioController.listarRecordatoriosPorHabito);
+router.get("/habito/:idHabito", verificarJWT, recordatorioController.listarRecordatoriosPorHabito);
 
 // PUT /recordatorios/:idRecordatorio
-router.put("/:idRecordatorio", recordatorioController.actualizarRecordatorio);
+router.put("/:idRecordatorio", verificarJWT, recordatorioController.actualizarRecordatorio);
 
 // PUT /recordatorios/activar/:idRecordatorio
-router.put("/activar/:idRecordatorio", recordatorioController.activarRecordatorio);
+router.put("/activar/:idRecordatorio", verificarJWT, recordatorioController.activarRecordatorio);
 
 // DELETE /recordatorios/:idRecordatorio
-router.delete("/:idRecordatorio", recordatorioController.eliminarRecordatorio);
+router.delete("/:idRecordatorio", verificarJWT, recordatorioController.eliminarRecordatorio);
 
 export default router;

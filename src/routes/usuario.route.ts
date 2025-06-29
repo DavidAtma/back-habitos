@@ -5,24 +5,24 @@ import { verificarJWT } from "../middlewares/auth.middleware";
 const router = Router();
 
 // POST /usuarios
-router.post("/", usuarioController.insertarUsuario);
+router.post("/", verificarJWT, usuarioController.insertarUsuario);
 
 // GET /usuarios
-router.get("/", usuarioController.listarUsuarios);
+router.get("/", verificarJWT, usuarioController.listarUsuarios);
 
 // GET /usuarios/activos
-router.get("/activos", usuarioController.listarUsuariosActivos);
+router.get("/activos", verificarJWT, usuarioController.listarUsuariosActivos);
 
 // GET /usuarios/correo/:correo
-//router.get("/correo", usuarioController.buscarPorCorreo);
+// router.get("/correo", verificarJWT, usuarioController.buscarPorCorreo);
 
 // PUT /usuarios/:idUsuario
-router.put("/:idUsuario", usuarioController.actualizarUsuario);
+router.put("/:idUsuario", verificarJWT, usuarioController.actualizarUsuario);
 
 // PUT /usuarios/activar/:idUsuario
-router.put("/activar/:idUsuario", usuarioController.activarUsuario);
+router.put("/activar/:idUsuario", verificarJWT, usuarioController.activarUsuario);
 
 // DELETE /usuarios/:idUsuario
-router.delete("/:idUsuario", usuarioController.eliminarUsuario);
+router.delete("/:idUsuario", verificarJWT, usuarioController.eliminarUsuario);
 
 export default router;
