@@ -8,10 +8,12 @@ import recordatorioRouter from './routes/recordatorio.route';
 import fraseRouter from './routes/fraseMotivacional.route';
 import seguimientoRouter from './routes/seguimiento.route';
 import authRouter from './routes/auth.route';
+import cors from 'cors';
 
 import { AppDataSource } from './config/appdatasource';
 
 const app: Application = express();
+app.use(cors());
 
 // Middleware para parsear JSON
 app.use(express.json());

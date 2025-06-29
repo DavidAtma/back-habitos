@@ -23,8 +23,10 @@ const recordatorio_route_1 = __importDefault(require("./routes/recordatorio.rout
 const fraseMotivacional_route_1 = __importDefault(require("./routes/fraseMotivacional.route"));
 const seguimiento_route_1 = __importDefault(require("./routes/seguimiento.route"));
 const auth_route_1 = __importDefault(require("./routes/auth.route"));
+const cors_1 = __importDefault(require("cors"));
 const appdatasource_1 = require("./config/appdatasource");
 const app = (0, express_1.default)();
+app.use((0, cors_1.default)());
 // Middleware para parsear JSON
 app.use(express_1.default.json());
 // Rutas principales
