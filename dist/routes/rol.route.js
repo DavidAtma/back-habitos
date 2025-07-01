@@ -49,5 +49,6 @@ router.put("/:idRol", auth_middleware_1.verificarJWT, rolController.actualizarRo
 router.put("/activar/:idRol", auth_middleware_1.verificarJWT, rolController.activarRol);
 // DELETE /roles/:idRol
 router.delete("/:idRol", auth_middleware_1.verificarJWT, rolController.eliminarRol);
+router.get("/:idRol", auth_middleware_1.verificarJWT, rolController.obtenerRolPorId);
 exports.default = router;
 //# sourceMappingURL=rol.route.js.map

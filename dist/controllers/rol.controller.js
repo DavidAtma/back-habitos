@@ -42,7 +42,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.activarRol = exports.eliminarRol = exports.actualizarRol = exports.listarRolesActivos = exports.listarRoles = exports.insertarRol = void 0;
+exports.activarRol = exports.eliminarRol = exports.actualizarRol = exports.obtenerRolPorId = exports.listarRolesActivos = exports.listarRoles = exports.insertarRol = void 0;
 const rolService = __importStar(require("../services/rol.service"));
 const base_response_1 = require("../shared/base-response");
 const constants_1 = require("../shared/constants");
@@ -83,6 +83,22 @@ const listarRolesActivos = (_req, res) => __awaiter(void 0, void 0, void 0, func
     }
 });
 exports.listarRolesActivos = listarRolesActivos;
+const obtenerRolPorId = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const idRol = parseInt(req.params.idRol);
+        const rol = yield rolService.obtenerRolPorId(idRol);
+        if (!rol) {
+            res.status(404).json(base_response_1.BaseResponse.error("Rol no encontrado"));
+            return;
+        }
+        res.json(base_response_1.BaseResponse.success(rol, constants_1.MensajeController.CONSULTA_OK));
+    }
+    catch (error) {
+        console.error("Error obtenerRolPorId:", error);
+        res.status(500).json(base_response_1.BaseResponse.error(error.message));
+    }
+});
+exports.obtenerRolPorId = obtenerRolPorId;
 // Actualizar rol
 const actualizarRol = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {

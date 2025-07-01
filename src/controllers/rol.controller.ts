@@ -37,6 +37,23 @@ export const listarRolesActivos = async (_req: Request, res: Response) => {
         res.status(500).json(BaseResponse.error(error.message));
     }
 };
+export const obtenerRolPorId = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const idRol = parseInt(req.params.idRol);
+    const rol = await rolService.obtenerRolPorId(idRol);
+
+    if (!rol) {
+      res.status(404).json(BaseResponse.error("Rol no encontrado"));
+      return;
+    }
+
+    res.json(BaseResponse.success(rol, MensajeController.CONSULTA_OK));
+  } catch (error: any) {
+    console.error("Error obtenerRolPorId:", error);
+    res.status(500).json(BaseResponse.error(error.message));
+  }
+};
+
 
 // Actualizar rol
 export const actualizarRol = async (req: Request, res: Response) => {

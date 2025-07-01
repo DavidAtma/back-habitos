@@ -26,10 +26,12 @@ const auth_route_1 = __importDefault(require("./routes/auth.route"));
 const cors_1 = __importDefault(require("cors"));
 const appdatasource_1 = require("./config/appdatasource");
 const app = (0, express_1.default)();
-app.use((0, cors_1.default)());
-// Middleware para parsear JSON
+app.use((0, cors_1.default)({
+    origin: 'http://127.0.0.1:8080', // Permitir solicitudes solo desde este origen
+    methods: ['GET', 'POST', 'PUT', 'DELETE'], // Métodos permitidos
+    allowedHeaders: ['Content-Type', 'Authorization'], // Encabezados permitidos
+}));
 app.use(express_1.default.json());
-// Rutas principales
 app.use('/api/v1/habitos', habito_route_1.default);
 app.use('/api/v1/categorias', categoria_route_1.default);
 app.use('/api/v1/usuarios', usuario_route_1.default);
@@ -39,7 +41,6 @@ app.use('/api/v1/recordatorios', recordatorio_route_1.default);
 app.use('/api/v1/frases', fraseMotivacional_route_1.default);
 app.use('/api/v1/auth', auth_route_1.default);
 app.use('/api/v1/seguimientos', seguimiento_route_1.default);
-// Middleware para rutas no encontradas (404)
 app.use((req, res) => {
     res.status(404).json({
         success: false,
@@ -47,7 +48,6 @@ app.use((req, res) => {
         data: null
     });
 });
-// Middleware de manejo de errores internos (500)
 app.use((err, req, res, _next) => {
     console.error("Error interno:", err);
     res.status(500).json({
@@ -56,7 +56,6 @@ app.use((err, req, res, _next) => {
         data: null
     });
 });
-// Inicializar la base de datos
 const startServer = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
         yield appdatasource_1.AppDataSource.initialize();

@@ -32,3 +32,4 @@ export const login = async (correo: string, contrasena: string): Promise<Usuario
         throw new Error("Error al intentar iniciar sesión");
     }
 };
+

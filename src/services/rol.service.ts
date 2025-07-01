@@ -1,6 +1,8 @@
 import { AppDataSource } from "../config/appdatasource";
 import { Rol } from "../entities/rol";
-
+export const obtenerRolPorId = async (idRol: number) => {
+  return await AppDataSource.getRepository(Rol).findOneBy({ idRol });
+};
 // Insertar rol
 export const insertarRol = async (rol: Partial<Rol>): Promise<Rol> => {
     if (!AppDataSource.isInitialized) {

@@ -9,9 +9,13 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.activarRol = exports.eliminarRol = exports.actualizarRol = exports.listarRoles = exports.listarRolesActivos = exports.insertarRol = void 0;
+exports.activarRol = exports.eliminarRol = exports.actualizarRol = exports.listarRoles = exports.listarRolesActivos = exports.insertarRol = exports.obtenerRolPorId = void 0;
 const appdatasource_1 = require("../config/appdatasource");
 const rol_1 = require("../entities/rol");
+const obtenerRolPorId = (idRol) => __awaiter(void 0, void 0, void 0, function* () {
+    return yield appdatasource_1.AppDataSource.getRepository(rol_1.Rol).findOneBy({ idRol });
+});
+exports.obtenerRolPorId = obtenerRolPorId;
 // Insertar rol
 const insertarRol = (rol) => __awaiter(void 0, void 0, void 0, function* () {
     if (!appdatasource_1.AppDataSource.isInitialized) {

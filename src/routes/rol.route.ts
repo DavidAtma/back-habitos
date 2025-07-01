@@ -22,4 +22,7 @@ router.put("/activar/:idRol", verificarJWT, rolController.activarRol);
 // DELETE /roles/:idRol
 router.delete("/:idRol", verificarJWT, rolController.eliminarRol);
 
+
+router.get("/:idRol", verificarJWT, rolController.obtenerRolPorId);
+
 export default router;
