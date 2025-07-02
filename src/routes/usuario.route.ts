@@ -25,4 +25,7 @@ router.put("/activar/:idUsuario", verificarJWT, usuarioController.activarUsuario
 // DELETE /usuarios/:idUsuario
 router.delete("/:idUsuario", verificarJWT, usuarioController.eliminarUsuario);
 
+// GET /usuarios/:idUsuario
+router.get("/:id", verificarJWT, usuarioController.obtenerUsuarioPorId);
+
 export default router;
