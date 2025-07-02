@@ -34,7 +34,7 @@ export const listarRoles = async (): Promise<Rol[]> => {
 
     const repository = AppDataSource.getRepository(Rol);
     return await repository.find({
-        order: { idRol: "DESC" }
+        order: { idRol: "ASC" }
     });
 };
 

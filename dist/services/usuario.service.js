@@ -42,7 +42,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.activarUsuario = exports.eliminarUsuario = exports.actualizarUsuario = exports.listarUsuarios = exports.listarUsuariosActivos = exports.insertarUsuario = void 0;
+exports.obtenerUsuarioPorId = exports.activarUsuario = exports.eliminarUsuario = exports.actualizarUsuario = exports.listarUsuarios = exports.listarUsuariosActivos = exports.insertarUsuario = void 0;
 const appdatasource_1 = require("../config/appdatasource");
 const usuario_1 = require("../entities/usuario");
 const bcrypt = __importStar(require("bcryptjs"));
@@ -77,10 +77,9 @@ const listarUsuarios = () => __awaiter(void 0, void 0, void 0, function* () {
     if (!appdatasource_1.AppDataSource.isInitialized) {
         yield appdatasource_1.AppDataSource.initialize();
     }
-    const repository = appdatasource_1.AppDataSource.getRepository(usuario_1.Usuario);
-    return yield repository.find({
-        relations: ['rol'],
-        order: { idUsuario: "DESC" }
+    return yield appdatasource_1.AppDataSource.getRepository(usuario_1.Usuario).find({
+        order: { idUsuario: "ASC" }, // 👈 Aquí ordenas por ID ascendente
+        relations: ["rol"]
     });
 });
 exports.listarUsuarios = listarUsuarios;
@@ -130,4 +129,16 @@ const activarUsuario = (idUsuario) => __awaiter(void 0, void 0, void 0, function
     yield repository.update({ idUsuario }, { estado: true });
 });
 exports.activarUsuario = activarUsuario;
+const obtenerUsuarioPorId = (idUsuario) => __awaiter(void 0, void 0, void 0, function* () {
+    if (!appdatasource_1.AppDataSource.isInitialized) {
+        yield appdatasource_1.AppDataSource.initialize();
+    }
+    return yield appdatasource_1.AppDataSource.getRepository(usuario_1.Usuario).findOne({
+        where: { idUsuario },
+        relations: {
+            rol: true, // 👈 importante para que venga el nombre del rol también
+        },
+    });
+});
+exports.obtenerUsuarioPorId = obtenerUsuarioPorId;
 //# sourceMappingURL=usuario.service.js.map

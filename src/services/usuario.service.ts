@@ -34,16 +34,16 @@ export const listarUsuariosActivos = async (): Promise<Usuario[]> => {
 
 // Listar todos los usuarios
 export const listarUsuarios = async (): Promise<Usuario[]> => {
-    if (!AppDataSource.isInitialized) {
-        await AppDataSource.initialize();
-    }
+  if (!AppDataSource.isInitialized) {
+    await AppDataSource.initialize();
+  }
 
-    const repository = AppDataSource.getRepository(Usuario);
-    return await repository.find({
-        relations: ['rol'],
-        order: { idUsuario: "DESC" }
-    });
+  return await AppDataSource.getRepository(Usuario).find({
+    order: { idUsuario: "ASC" }, // 👈 Aquí ordenas por ID ascendente
+    relations: ["rol"]
+  });
 };
+
 
 // Buscar usuario por correo
 /*export const buscarUsuarioPorCorreo = async (correo: string): Promise<Usuario | null> => {
@@ -95,4 +95,17 @@ export const activarUsuario = async (idUsuario: number): Promise<void> => {
 
     const repository = AppDataSource.getRepository(Usuario);
     await repository.update({ idUsuario }, { estado: true });
+};
+
+export const obtenerUsuarioPorId = async (idUsuario: number): Promise<Usuario | null> => {
+  if (!AppDataSource.isInitialized) {
+    await AppDataSource.initialize();
+  }
+
+  return await AppDataSource.getRepository(Usuario).findOne({
+    where: { idUsuario },
+    relations: {
+      rol: true, // 👈 importante para que venga el nombre del rol también
+    },
+  });
 };

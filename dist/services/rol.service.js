@@ -44,7 +44,7 @@ const listarRoles = () => __awaiter(void 0, void 0, void 0, function* () {
     }
     const repository = appdatasource_1.AppDataSource.getRepository(rol_1.Rol);
     return yield repository.find({
-        order: { idRol: "DESC" }
+        order: { idRol: "ASC" }
     });
 });
 exports.listarRoles = listarRoles;
