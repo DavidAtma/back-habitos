@@ -40,7 +40,7 @@ export const listarUsuariosActivos = async (_req: Request, res: Response) => {
 };
 
 // Buscar usuario por correo
-/*export const buscarPorCorreo = async (req: Request, res: Response) => {
+export const buscarPorCorreo = async (req: Request, res: Response) => {
     try {
         const correo = req.query.correo as string;
         if (!correo) {
@@ -57,7 +57,7 @@ export const listarUsuariosActivos = async (_req: Request, res: Response) => {
         console.error("Error buscarPorCorreo:", error);
         res.status(500).json(BaseResponse.error(error.message));
     }
-};*/
+};
 
 
 // Actualizar usuario
@@ -97,6 +97,7 @@ export const activarUsuario = async (req: Request, res: Response) => {
     }
 };
 
+// Obtener usuario por ID
 export const obtenerUsuarioPorId = async (req: Request, res: Response): Promise<void> => {
   const id = parseInt(req.params.id);
 
