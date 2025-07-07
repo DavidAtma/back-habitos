@@ -16,6 +16,9 @@ router.get("/", verificarJWT, seguimientoController.listarSeguimientos);
 // GET /seguimientos/habito/:idHabito
 router.get("/habito/:idHabito", verificarJWT, seguimientoController.listarSeguimientosPorHabito);
 
+// GET /seguimientos/usuario/:idUsuario
+router.get("/usuario/:idUsuario", verificarJWT, seguimientoController.listarSeguimientosPorUsuario);
+
 // Nuevo GET /seguimientos/usuario/:idUsuario/fecha/:fecha
 router.get("/usuario/:idUsuario/fecha/:fecha", verificarJWT, seguimientoController.listarSeguimientosPorUsuarioYFecha);
 

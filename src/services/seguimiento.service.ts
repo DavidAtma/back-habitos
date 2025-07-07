@@ -53,6 +53,20 @@ export const listarSeguimientosPorHabito = async (idHabito: number): Promise<Seg
     });
 };
 
+// Listar seguimientos por usuario
+export const listarSeguimientosPorUsuario = async (idUsuario: number): Promise<Seguimiento[]> => {
+    if (!AppDataSource.isInitialized) {
+        await AppDataSource.initialize();
+    }
+
+    const repository = AppDataSource.getRepository(Seguimiento);
+    return await repository.find({
+        where: { habito: { usuario: { idUsuario }, estado: true } },
+        relations: ['habito', 'habito.usuario'],
+        order: { fecha: "DESC" }
+    });
+};
+
 // Listar seguimientos por usuario y fecha
 export const listarSeguimientosPorUsuarioYFecha = async (idUsuario: number, fecha: string): Promise<Seguimiento[]> => {
     if (!AppDataSource.isInitialized) {

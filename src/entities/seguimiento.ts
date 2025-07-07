@@ -13,8 +13,6 @@ export class Seguimiento {
     fecha: Date;
     @Column({ name: 'completado' })
     completado: boolean;
-    @Column({ name: 'nota_dia', type: 'varchar', length: 250 })
-    notaDia: string;
     @CreateDateColumn({ name: 'fecha_creacion', type: 'datetime' })
     fechaCreacion: Date;
     @Column({ name: 'estado_auditoria', type: 'bit', default: 1 })
