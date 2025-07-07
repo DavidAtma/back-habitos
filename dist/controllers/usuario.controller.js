@@ -42,7 +42,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.activarUsuario = exports.eliminarUsuario = exports.actualizarUsuario = exports.listarUsuariosActivos = exports.listarUsuarios = exports.insertarUsuario = void 0;
+exports.obtenerUsuarioPorId = exports.activarUsuario = exports.eliminarUsuario = exports.actualizarUsuario = exports.listarUsuariosActivos = exports.listarUsuarios = exports.insertarUsuario = void 0;
 const usuarioService = __importStar(require("../services/usuario.service"));
 const base_response_1 = require("../shared/base-response");
 const constants_1 = require("../shared/constants");
@@ -51,14 +51,18 @@ const insertarUsuario = (req, res) => __awaiter(void 0, void 0, void 0, function
     try {
         const usuario = req.body;
         const nuevoUsuario = yield usuarioService.insertarUsuario(usuario);
-        res.json(base_response_1.BaseResponse.success(nuevoUsuario.idUsuario, constants_1.MensajeController.INSERTADO_OK));
+        res.status(201).json(base_response_1.BaseResponse.success(nuevoUsuario.idUsuario, constants_1.MensajeController.INSERTADO_OK));
+        return;
     }
     catch (error) {
         console.error("Error insertarUsuario:", error);
         if (error.message.includes("correo ya está registrado")) {
-            return res.status(409).json(base_response_1.BaseResponse.error("El correo ya está registrado", 409));
+            // llamar a res.json / res.status y luego salir
+            res.status(409).json(base_response_1.BaseResponse.error("El correo ya está registrado", 409));
+            return;
         }
         res.status(500).json(base_response_1.BaseResponse.error(error.message));
+        return;
     }
 });
 exports.insertarUsuario = insertarUsuario;
@@ -126,4 +130,22 @@ const activarUsuario = (req, res) => __awaiter(void 0, void 0, void 0, function*
     }
 });
 exports.activarUsuario = activarUsuario;
+const obtenerUsuarioPorId = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const id = Number(req.params.id);
+        const usuario = yield usuarioService.obtenerUsuarioPorId(id);
+        if (!usuario) {
+            res.status(404).json(base_response_1.BaseResponse.error("Usuario no encontrado", 404));
+            return;
+        }
+        res.json(base_response_1.BaseResponse.success(usuario, constants_1.MensajeController.CONSULTA_OK));
+        return;
+    }
+    catch (error) {
+        console.error("Error obtenerUsuarioPorId:", error);
+        res.status(500).json(base_response_1.BaseResponse.error(error.message));
+        return;
+    }
+});
+exports.obtenerUsuarioPorId = obtenerUsuarioPorId;
 //# sourceMappingURL=usuario.controller.js.map

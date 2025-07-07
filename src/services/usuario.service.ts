@@ -89,3 +89,17 @@ export const activarUsuario = async (idUsuario: number): Promise<void> => {
     await repository.update({ idUsuario }, { estado: true });
 };
 
+
+
+// Obtener un usuario por su id
+export const obtenerUsuarioPorId = async (
+  idUsuario: number
+): Promise<Usuario | null> => {
+  if (!AppDataSource.isInitialized) {
+    await AppDataSource.initialize();
+  }
+  return await AppDataSource.getRepository(Usuario).findOne({
+    where: { idUsuario },
+    relations: ['rol']
+  });
+};

@@ -6,20 +6,29 @@ import { Usuario } from "../entities/usuario";
 import AppDataSource from "../config/appdatasource";
 
 // Insertar usuario
-export const insertarUsuario = async (req: Request, res: Response) => {
-    try {
-        const usuario: Partial<Usuario> = req.body;
-        const nuevoUsuario = await usuarioService.insertarUsuario(usuario);
-        res.json(BaseResponse.success(nuevoUsuario.idUsuario, MensajeController.INSERTADO_OK));
-    } catch (error: any) {
-        console.error("Error insertarUsuario:", error);
-        if (error.message.includes("correo ya está registrado")) {
-      return res.status(409).json(
+export const insertarUsuario = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  try {
+    const usuario: Partial<Usuario> = req.body;
+    const nuevoUsuario = await usuarioService.insertarUsuario(usuario);
+    res.status(201).json(
+      BaseResponse.success(nuevoUsuario.idUsuario, MensajeController.INSERTADO_OK)
+    );
+    return;
+  } catch (error: any) {
+    console.error("Error insertarUsuario:", error);
+    if (error.message.includes("correo ya está registrado")) {
+      // llamar a res.json / res.status y luego salir
+      res.status(409).json(
         BaseResponse.error("El correo ya está registrado", 409)
       );
-      }
-        res.status(500).json(BaseResponse.error(error.message));
+      return;
     }
+    res.status(500).json(BaseResponse.error(error.message));
+    return;
+  }
 };
 
 // Listar todos los usuarios
@@ -81,3 +90,24 @@ export const activarUsuario = async (req: Request, res: Response) => {
     }
 };
 
+
+
+export const obtenerUsuarioPorId = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  try {
+    const id = Number(req.params.id);
+    const usuario = await usuarioService.obtenerUsuarioPorId(id);
+    if (!usuario) {
+      res.status(404).json(BaseResponse.error("Usuario no encontrado", 404));
+      return;
+    }
+    res.json(BaseResponse.success(usuario, MensajeController.CONSULTA_OK));
+    return;
+  } catch (error: any) {
+    console.error("Error obtenerUsuarioPorId:", error);
+    res.status(500).json(BaseResponse.error(error.message));
+    return;
+  }
+};

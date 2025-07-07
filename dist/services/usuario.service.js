@@ -42,7 +42,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.activarUsuario = exports.eliminarUsuario = exports.actualizarUsuario = exports.listarUsuarios = exports.listarUsuariosActivos = exports.insertarUsuario = void 0;
+exports.obtenerUsuarioPorId = exports.activarUsuario = exports.eliminarUsuario = exports.actualizarUsuario = exports.listarUsuarios = exports.listarUsuariosActivos = exports.insertarUsuario = void 0;
 const appdatasource_1 = require("../config/appdatasource");
 const usuario_1 = require("../entities/usuario");
 const bcrypt = __importStar(require("bcryptjs"));
@@ -119,4 +119,15 @@ const activarUsuario = (idUsuario) => __awaiter(void 0, void 0, void 0, function
     yield repository.update({ idUsuario }, { estado: true });
 });
 exports.activarUsuario = activarUsuario;
+// Obtener un usuario por su id
+const obtenerUsuarioPorId = (idUsuario) => __awaiter(void 0, void 0, void 0, function* () {
+    if (!appdatasource_1.AppDataSource.isInitialized) {
+        yield appdatasource_1.AppDataSource.initialize();
+    }
+    return yield appdatasource_1.AppDataSource.getRepository(usuario_1.Usuario).findOne({
+        where: { idUsuario },
+        relations: ['rol']
+    });
+});
+exports.obtenerUsuarioPorId = obtenerUsuarioPorId;
 //# sourceMappingURL=usuario.service.js.map
