@@ -82,3 +82,12 @@ export const activarHabito = async (idHabito: number): Promise<void> => {
     const repository = AppDataSource.getRepository(Habito);
     await repository.update({ idHabito }, { estado: true });
 };
+
+// Obtener un hábito por ID
+export const obtenerHabitoPorId = async (idHabito: number): Promise<Habito | null> => {
+    const repository = AppDataSource.getRepository(Habito);
+    return await repository.findOne({
+        where: { idHabito },
+        relations: ["usuario", "categoria"]  // Si usas relaciones
+    });
+};

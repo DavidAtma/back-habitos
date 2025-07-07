@@ -22,7 +22,8 @@ export const login = async (correo: string, contrasena: string): Promise<Usuario
             return null;
         }
 
-       const isMatch = contrasena === usuario.contrasena;
+       //const isMatch = contrasena === usuario.contrasena;
+       const isMatch = await bcrypt.compare(contrasena, usuario.contrasena);
 
         
         return isMatch ? usuario : null;

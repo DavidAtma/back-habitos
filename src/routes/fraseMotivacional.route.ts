@@ -11,6 +11,7 @@ router.get("/activas", verificarJWT, fraseController.listarFrasesActivas);
 router.put("/:idFrase", verificarJWT, fraseController.actualizarFrase);
 router.delete("/:idFrase", verificarJWT, fraseController.eliminarFrase);
 router.put("/activar/:idFrase", verificarJWT, fraseController.activarFrase);
+router.get("/:idFrase", verificarJWT, fraseController.obtenerFrasePorId);
 
 export default router;
 

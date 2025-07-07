@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.activarHabito = exports.eliminarHabito = exports.actualizarHabito = exports.listarHabitosPorUsuario = exports.listarHabitos = exports.listarHabitosActivos = exports.insertarHabito = void 0;
+exports.obtenerHabitoPorId = exports.activarHabito = exports.eliminarHabito = exports.actualizarHabito = exports.listarHabitosPorUsuario = exports.listarHabitos = exports.listarHabitosActivos = exports.insertarHabito = void 0;
 const appdatasource_1 = require("../config/appdatasource");
 const habito_1 = require("../entities/habito");
 // Insertar hábito y devolver el objeto con ID generado
@@ -87,4 +87,13 @@ const activarHabito = (idHabito) => __awaiter(void 0, void 0, void 0, function* 
     yield repository.update({ idHabito }, { estado: true });
 });
 exports.activarHabito = activarHabito;
+// Obtener un hábito por ID
+const obtenerHabitoPorId = (idHabito) => __awaiter(void 0, void 0, void 0, function* () {
+    const repository = appdatasource_1.AppDataSource.getRepository(habito_1.Habito);
+    return yield repository.findOne({
+        where: { idHabito },
+        relations: ["usuario", "categoria"] // Si usas relaciones
+    });
+});
+exports.obtenerHabitoPorId = obtenerHabitoPorId;
 //# sourceMappingURL=habito.service.js.map

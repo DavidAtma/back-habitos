@@ -86,3 +86,25 @@ export const activarHabito = async (req: Request, res: Response) => {
         res.status(500).json(BaseResponse.error(error.message));
     }
 };
+
+// Obtener un hábito por ID
+export const obtenerHabitoPorId = async (req: Request, res: Response): Promise<void> => {
+  const { idHabito } = req.params;  // Extraemos el idHabito de los parámetros de la URL
+  try {
+    // Llamamos al servicio para obtener el hábito por ID
+    const habito = await habitoService.obtenerHabitoPorId(Number(idHabito));
+
+    if (!habito) {
+      // Si no se encuentra el hábito, respondemos con un 404
+      res.status(404).json({ success: false, message: "Hábito no encontrado" });
+      return;  // Asegúrate de terminar la ejecución aquí si no hay hábito
+    }
+
+    // Si encontramos el hábito, lo devolvemos en formato JSON con un 200
+    res.json({ success: true, data: habito });
+  } catch (error) {
+    // En caso de error, respondemos con un 500 y el mensaje de error
+    console.error("Error al obtener hábito:", error);
+    res.status(500).json({ success: false, message: "Error al obtener el hábito", error });
+  }
+};

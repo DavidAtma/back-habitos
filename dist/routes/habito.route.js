@@ -51,5 +51,6 @@ router.put("/:idHabito", auth_middleware_1.verificarJWT, habitoController.actual
 router.patch("/activar/:idHabito", auth_middleware_1.verificarJWT, habitoController.activarHabito);
 // DELETE /habitos/:idHabito
 router.delete("/:idHabito", auth_middleware_1.verificarJWT, habitoController.eliminarHabito);
+router.get("/:idHabito", auth_middleware_1.verificarJWT, habitoController.obtenerHabitoPorId); // Ruta para obtener un hábito por su ID
 exports.default = router;
 //# sourceMappingURL=habito.route.js.map
