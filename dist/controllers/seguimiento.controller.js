@@ -42,7 +42,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.activarSeguimiento = exports.eliminarSeguimiento = exports.actualizarSeguimiento = exports.listarSeguimientosPorUsuarioYFecha = exports.listarSeguimientosPorHabito = exports.listarSeguimientos = exports.listarSeguimientosActivos = exports.insertarSeguimiento = void 0;
+exports.activarSeguimiento = exports.eliminarSeguimiento = exports.actualizarSeguimiento = exports.listarSeguimientosPorUsuarioYFecha = exports.listarSeguimientosPorUsuario = exports.listarSeguimientosPorHabito = exports.listarSeguimientos = exports.listarSeguimientosActivos = exports.insertarSeguimiento = void 0;
 const seguimientoService = __importStar(require("../services/seguimiento.service"));
 const base_response_1 = require("../shared/base-response");
 const constants_1 = require("../shared/constants");
@@ -96,6 +96,19 @@ const listarSeguimientosPorHabito = (req, res) => __awaiter(void 0, void 0, void
     }
 });
 exports.listarSeguimientosPorHabito = listarSeguimientosPorHabito;
+// Listar seguimientos por usuario
+const listarSeguimientosPorUsuario = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const idUsuario = parseInt(req.params.idUsuario);
+        const seguimientos = yield seguimientoService.listarSeguimientosPorUsuario(idUsuario);
+        res.json(base_response_1.BaseResponse.success(seguimientos, constants_1.MensajeController.CONSULTA_OK));
+    }
+    catch (error) {
+        console.error("Error listarSeguimientosPorUsuario:", error);
+        res.status(500).json(base_response_1.BaseResponse.error(error.message));
+    }
+});
+exports.listarSeguimientosPorUsuario = listarSeguimientosPorUsuario;
 // Listar seguimientos por usuario y fecha
 const listarSeguimientosPorUsuarioYFecha = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {

@@ -45,6 +45,8 @@ router.get("/activos", auth_middleware_1.verificarJWT, seguimientoController.lis
 router.get("/", auth_middleware_1.verificarJWT, seguimientoController.listarSeguimientos);
 // GET /seguimientos/habito/:idHabito
 router.get("/habito/:idHabito", auth_middleware_1.verificarJWT, seguimientoController.listarSeguimientosPorHabito);
+// GET /seguimientos/usuario/:idUsuario
+router.get("/usuario/:idUsuario", auth_middleware_1.verificarJWT, seguimientoController.listarSeguimientosPorUsuario);
 // Nuevo GET /seguimientos/usuario/:idUsuario/fecha/:fecha
 router.get("/usuario/:idUsuario/fecha/:fecha", auth_middleware_1.verificarJWT, seguimientoController.listarSeguimientosPorUsuarioYFecha);
 // PUT /seguimientos/:idSeguimiento

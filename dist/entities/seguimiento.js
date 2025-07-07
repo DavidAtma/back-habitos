@@ -33,10 +33,6 @@ __decorate([
     __metadata("design:type", Boolean)
 ], Seguimiento.prototype, "completado", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ name: 'nota_dia', type: 'varchar', length: 250 }),
-    __metadata("design:type", String)
-], Seguimiento.prototype, "notaDia", void 0);
-__decorate([
     (0, typeorm_1.CreateDateColumn)({ name: 'fecha_creacion', type: 'datetime' }),
     __metadata("design:type", Date)
 ], Seguimiento.prototype, "fechaCreacion", void 0);

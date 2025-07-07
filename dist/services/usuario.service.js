@@ -42,7 +42,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.obtenerUsuarioPorId = exports.activarUsuario = exports.eliminarUsuario = exports.actualizarUsuario = exports.listarUsuarios = exports.listarUsuariosActivos = exports.insertarUsuario = void 0;
+exports.activarUsuario = exports.eliminarUsuario = exports.actualizarUsuario = exports.listarUsuarios = exports.listarUsuariosActivos = exports.insertarUsuario = void 0;
 const appdatasource_1 = require("../config/appdatasource");
 const usuario_1 = require("../entities/usuario");
 const bcrypt = __importStar(require("bcryptjs"));
@@ -52,10 +52,16 @@ const insertarUsuario = (usuario) => __awaiter(void 0, void 0, void 0, function*
         yield appdatasource_1.AppDataSource.initialize();
     }
     const repository = appdatasource_1.AppDataSource.getRepository(usuario_1.Usuario);
-    // Hashear la contraseña si existe
-    if (usuario.contrasena) {
-        usuario.contrasena = yield bcrypt.hash(usuario.contrasena, 10);
+    const correo = usuario.correo.trim().toLowerCase();
+    const usuarioExistente = yield repository.findOne({
+        where: { correo }
+    });
+    if (usuarioExistente) {
+        throw new Error("El correo ya está registrado");
     }
+    const contrasenaHash = yield bcrypt.hash(usuario.contrasena, 10);
+    usuario.correo = correo;
+    usuario.contrasena = contrasenaHash;
     return yield repository.save(usuario);
 });
 exports.insertarUsuario = insertarUsuario;
@@ -78,33 +84,17 @@ const listarUsuarios = () => __awaiter(void 0, void 0, void 0, function* () {
         yield appdatasource_1.AppDataSource.initialize();
     }
     return yield appdatasource_1.AppDataSource.getRepository(usuario_1.Usuario).find({
-        order: { idUsuario: "ASC" }, // 👈 Aquí ordenas por ID ascendente
+        order: { idUsuario: "ASC" },
         relations: ["rol"]
     });
 });
 exports.listarUsuarios = listarUsuarios;
-// Buscar usuario por correo
-/*export const buscarUsuarioPorCorreo = async (correo: string): Promise<Usuario | null> => {
-    if (!AppDataSource.isInitialized) {
-        await AppDataSource.initialize();
-    }
-
-    const repository = AppDataSource.getRepository(Usuario);
-    return await repository.findOne({
-        where: {
-            correo: correo.trim().toLowerCase(),
-            estado: true
-        },
-        relations: ['rol']
-    });
-};*/
 // Actualizar usuario
 const actualizarUsuario = (idUsuario, data) => __awaiter(void 0, void 0, void 0, function* () {
     if (!appdatasource_1.AppDataSource.isInitialized) {
         yield appdatasource_1.AppDataSource.initialize();
     }
     const repository = appdatasource_1.AppDataSource.getRepository(usuario_1.Usuario);
-    // Hashear la nueva contraseña si está presente
     if (data.contrasena) {
         data.contrasena = yield bcrypt.hash(data.contrasena, 10);
     }
@@ -129,16 +119,4 @@ const activarUsuario = (idUsuario) => __awaiter(void 0, void 0, void 0, function
     yield repository.update({ idUsuario }, { estado: true });
 });
 exports.activarUsuario = activarUsuario;
-const obtenerUsuarioPorId = (idUsuario) => __awaiter(void 0, void 0, void 0, function* () {
-    if (!appdatasource_1.AppDataSource.isInitialized) {
-        yield appdatasource_1.AppDataSource.initialize();
-    }
-    return yield appdatasource_1.AppDataSource.getRepository(usuario_1.Usuario).findOne({
-        where: { idUsuario },
-        relations: {
-            rol: true, // 👈 importante para que venga el nombre del rol también
-        },
-    });
-});
-exports.obtenerUsuarioPorId = obtenerUsuarioPorId;
 //# sourceMappingURL=usuario.service.js.map

@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.activarSeguimiento = exports.eliminarSeguimiento = exports.actualizarSeguimiento = exports.listarSeguimientosPorUsuarioYFecha = exports.listarSeguimientosPorHabito = exports.listarSeguimientos = exports.listarSeguimientosActivos = exports.insertarSeguimiento = void 0;
+exports.activarSeguimiento = exports.eliminarSeguimiento = exports.actualizarSeguimiento = exports.listarSeguimientosPorUsuarioYFecha = exports.listarSeguimientosPorUsuario = exports.listarSeguimientosPorHabito = exports.listarSeguimientos = exports.listarSeguimientosActivos = exports.insertarSeguimiento = void 0;
 const appdatasource_1 = require("../config/appdatasource");
 const seguimiento_1 = require("../entities/seguimiento");
 const typeorm_1 = require("typeorm"); // Importar Between
@@ -60,6 +60,19 @@ const listarSeguimientosPorHabito = (idHabito) => __awaiter(void 0, void 0, void
     });
 });
 exports.listarSeguimientosPorHabito = listarSeguimientosPorHabito;
+// Listar seguimientos por usuario
+const listarSeguimientosPorUsuario = (idUsuario) => __awaiter(void 0, void 0, void 0, function* () {
+    if (!appdatasource_1.AppDataSource.isInitialized) {
+        yield appdatasource_1.AppDataSource.initialize();
+    }
+    const repository = appdatasource_1.AppDataSource.getRepository(seguimiento_1.Seguimiento);
+    return yield repository.find({
+        where: { habito: { usuario: { idUsuario }, estado: true } },
+        relations: ['habito', 'habito.usuario'],
+        order: { fecha: "DESC" }
+    });
+});
+exports.listarSeguimientosPorUsuario = listarSeguimientosPorUsuario;
 // Listar seguimientos por usuario y fecha
 const listarSeguimientosPorUsuarioYFecha = (idUsuario, fecha) => __awaiter(void 0, void 0, void 0, function* () {
     if (!appdatasource_1.AppDataSource.isInitialized) {
