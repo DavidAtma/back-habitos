@@ -52,6 +52,7 @@ router.put("/activar/:idUsuario", auth_middleware_1.verificarJWT, usuarioControl
 // DELETE /usuarios/:idUsuario
 router.delete("/:idUsuario", auth_middleware_1.verificarJWT, usuarioController.eliminarUsuario);
 // ⚠️ Esta línea es nueva:
+// GET /usuarios/:idUsuario
 router.get("/:id", auth_middleware_1.verificarJWT, usuarioController.obtenerUsuarioPorId);
 exports.default = router;
 //# sourceMappingURL=usuario.route.js.map
