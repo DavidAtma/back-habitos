@@ -9,10 +9,21 @@ export const insertarUsuario = async (usuario: Partial<Usuario>): Promise<Usuari
     }
 
     const repository = AppDataSource.getRepository(Usuario);
+    
+    const correo = usuario.correo.trim().toLowerCase();
 
-    if (usuario.contrasena) {
-        usuario.contrasena = await bcrypt.hash(usuario.contrasena, 10);
+    const usuarioExistente = await repository.findOne({
+        where: { correo }
+    });
+
+    if (usuarioExistente) {
+        throw new Error("El correo ya está registrado");
     }
+
+    const contrasenaHash = await bcrypt.hash(usuario.contrasena, 10);
+    
+    usuario.correo = correo;
+    usuario.contrasena = contrasenaHash;
 
     return await repository.save(usuario);
 };
@@ -41,23 +52,6 @@ export const listarUsuarios = async (): Promise<Usuario[]> => {
     order: { idUsuario: "ASC" },
     relations: ["rol"]
   });
-};
-
-
-// Buscar usuario por correo
-export const buscarUsuarioPorCorreo = async (correo: string): Promise<Usuario | null> => {
-    if (!AppDataSource.isInitialized) {
-        await AppDataSource.initialize();
-    }
-
-    const repository = AppDataSource.getRepository(Usuario);
-    return await repository.findOne({
-        where: {
-            correo: correo.trim().toLowerCase(),
-            estado: true
-        },
-        relations: ['rol']
-    });
 };
 
 // Actualizar usuario
@@ -95,16 +89,3 @@ export const activarUsuario = async (idUsuario: number): Promise<void> => {
     await repository.update({ idUsuario }, { estado: true });
 };
 
-// Obtener usuario por ID
-export const obtenerUsuarioPorId = async (idUsuario: number): Promise<Usuario | null> => {
-  if (!AppDataSource.isInitialized) {
-    await AppDataSource.initialize();
-  }
-
-  return await AppDataSource.getRepository(Usuario).findOne({
-    where: { idUsuario },
-    relations: {
-      rol: true,
-    },
-  });
-};
