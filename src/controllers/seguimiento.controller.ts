@@ -50,6 +50,18 @@ export const listarSeguimientosPorHabito = async (req: Request, res: Response) =
     }
 };
 
+// Listar seguimientos por usuario
+export const listarSeguimientosPorUsuario = async (req: Request, res: Response) => {
+    try {
+        const idUsuario = parseInt(req.params.idUsuario);
+        const seguimientos = await seguimientoService.listarSeguimientosPorUsuario(idUsuario);
+        res.json(BaseResponse.success(seguimientos, MensajeController.CONSULTA_OK));
+    } catch (error: any) {
+        console.error("Error listarSeguimientosPorUsuario:", error);
+        res.status(500).json(BaseResponse.error(error.message));
+    }
+};
+
 // Listar seguimientos por usuario y fecha
 export const listarSeguimientosPorUsuarioYFecha = async (req: Request, res: Response) => {
     try {
@@ -62,7 +74,6 @@ export const listarSeguimientosPorUsuarioYFecha = async (req: Request, res: Resp
         res.status(500).json(BaseResponse.error(error.message));
     }
 };
-
 
 // Actualizar seguimiento
 export const actualizarSeguimiento = async (req: Request, res: Response) => {
