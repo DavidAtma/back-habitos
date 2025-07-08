@@ -112,11 +112,13 @@ const actualizarUsuario = (req, res) => __awaiter(void 0, void 0, void 0, functi
     try {
         const idUsuario = parseInt(req.params.idUsuario);
         const data = req.body;
+        console.log("👉 ID recibido:", idUsuario);
+        console.log("👉 Data recibida:", data);
         yield usuarioService.actualizarUsuario(idUsuario, data);
         res.json(base_response_1.BaseResponse.success(null, constants_1.MensajeController.ACTUALIZADO_OK));
     }
     catch (error) {
-        console.error("Error actualizarUsuario:", error);
+        console.error("❌ Error actualizarUsuario:", error);
         res.status(500).json(base_response_1.BaseResponse.error(error.message));
     }
 });

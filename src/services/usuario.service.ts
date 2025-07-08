@@ -74,6 +74,9 @@ export const actualizarUsuario = async (idUsuario: number, data: Partial<Usuario
         data.contrasena = await bcrypt.hash(data.contrasena, 10);
     }
 
+        // Elimina idUsuario desde el frontend
+    delete (data as any).idUsuario;
+
     await repository.update({ idUsuario }, data);
 };
 

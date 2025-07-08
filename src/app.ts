@@ -12,12 +12,12 @@ import fraseRouter from './routes/fraseMotivacional.route';
 import seguimientoRouter from './routes/seguimiento.route';
 import authRouter from './routes/auth.route';
 
-// 🔗 Importar conexión a la base de datos
+// Importar conexión a la base de datos
 import { AppDataSource } from './config/appdatasource';
 
 const app: Application = express();
 
-// ✅ Middleware CORS
+// Middleware CORS
 app.use(cors({
   origin: [
     'http://127.0.0.1:8080',
@@ -61,7 +61,7 @@ app.use((err: any, req: Request, res: Response, _next: NextFunction) => {
   });
 });
 
-// 🚀 Inicialización del servidor y la base de datos
+// Inicialización del servidor y la base de datos
 export const startServer = async () => {
   try {
     await AppDataSource.initialize();

@@ -25,10 +25,10 @@ const recordatorio_route_1 = __importDefault(require("./routes/recordatorio.rout
 const fraseMotivacional_route_1 = __importDefault(require("./routes/fraseMotivacional.route"));
 const seguimiento_route_1 = __importDefault(require("./routes/seguimiento.route"));
 const auth_route_1 = __importDefault(require("./routes/auth.route"));
-// 🔗 Importar conexión a la base de datos
+// Importar conexión a la base de datos
 const appdatasource_1 = require("./config/appdatasource");
 const app = (0, express_1.default)();
-// ✅ Middleware CORS
+// Middleware CORS
 app.use((0, cors_1.default)({
     origin: [
         'http://127.0.0.1:8080',
@@ -67,7 +67,7 @@ app.use((err, req, res, _next) => {
         data: null
     });
 });
-// 🚀 Inicialización del servidor y la base de datos
+// Inicialización del servidor y la base de datos
 const startServer = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
         yield appdatasource_1.AppDataSource.initialize();

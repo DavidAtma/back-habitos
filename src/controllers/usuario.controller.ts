@@ -65,10 +65,15 @@ export const actualizarUsuario = async (req: Request, res: Response) => {
     try {
         const idUsuario = parseInt(req.params.idUsuario);
         const data: Partial<Usuario> = req.body;
+
+        console.log("👉 ID recibido:", idUsuario);
+        console.log("👉 Data recibida:", data);
+
         await usuarioService.actualizarUsuario(idUsuario, data);
+
         res.json(BaseResponse.success(null, MensajeController.ACTUALIZADO_OK));
     } catch (error: any) {
-        console.error("Error actualizarUsuario:", error);
+        console.error("❌ Error actualizarUsuario:", error);  
         res.status(500).json(BaseResponse.error(error.message));
     }
 };
