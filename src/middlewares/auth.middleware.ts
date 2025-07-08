@@ -1,16 +1,9 @@
 import { Request, Response, NextFunction } from "express";
-import { verificarToken } from "../shared/jwt.utils";
-import { JwtPayload } from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 
-export interface AuthenticatedRequest extends Request {
-  usuario?: string | JwtPayload;
-}
+const SECRET_KEY = process.env.JWT_SECRET || "Yoku1510*";
 
-export const verificarJWT = (
-  req: AuthenticatedRequest,
-  res: Response,
-  next: NextFunction
-): void => {
+export const verificarJWT = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   const authHeader = req.headers.authorization;
 
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
@@ -19,13 +12,16 @@ export const verificarJWT = (
       message: "Token no proporcionado o inválido",
       data: null
     });
-    return;
+    return; // ⬅️ Corta ejecución aquí
   }
 
   const token = authHeader.split(" ")[1];
 
-  const decoded = verificarToken(token);
-  if (!decoded) {
+  try {
+    const decoded = jwt.verify(token, SECRET_KEY);
+    (req as any).usuario = decoded;
+    next(); // ⬅️ Avanza correctamente
+  } catch (error) {
     res.status(401).json({
       success: false,
       message: "Token inválido o expirado",
@@ -33,7 +29,4 @@ export const verificarJWT = (
     });
     return;
   }
-
-  req.usuario = decoded;
-  next();
 };

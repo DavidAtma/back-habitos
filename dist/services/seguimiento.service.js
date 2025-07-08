@@ -9,113 +9,97 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.activarSeguimiento = exports.eliminarSeguimiento = exports.actualizarSeguimiento = exports.listarSeguimientosPorUsuarioYFecha = exports.listarSeguimientosPorUsuario = exports.listarSeguimientosPorHabito = exports.listarSeguimientos = exports.listarSeguimientosActivos = exports.insertarSeguimiento = void 0;
+exports.activarSeguimiento = exports.eliminarSeguimiento = exports.actualizarSeguimiento = exports.listarSeguimientosCompletadosPorUsuario = exports.listarSeguimientosPorUsuarioYFecha = exports.listarSeguimientosPorHabito = exports.listarSeguimientos = exports.listarSeguimientosActivos = exports.insertarSeguimiento = void 0;
 const appdatasource_1 = require("../config/appdatasource");
 const seguimiento_1 = require("../entities/seguimiento");
-const typeorm_1 = require("typeorm"); // Importar Between
-// Insertar seguimiento
-const insertarSeguimiento = (seguimiento) => __awaiter(void 0, void 0, void 0, function* () {
+const ensureDataSourceInitialized = () => __awaiter(void 0, void 0, void 0, function* () {
     if (!appdatasource_1.AppDataSource.isInitialized) {
         yield appdatasource_1.AppDataSource.initialize();
     }
+});
+const insertarSeguimiento = (seguimiento) => __awaiter(void 0, void 0, void 0, function* () {
+    yield ensureDataSourceInitialized();
     const repository = appdatasource_1.AppDataSource.getRepository(seguimiento_1.Seguimiento);
     return yield repository.save(seguimiento);
 });
 exports.insertarSeguimiento = insertarSeguimiento;
-// Listar todos los seguimientos activos
 const listarSeguimientosActivos = () => __awaiter(void 0, void 0, void 0, function* () {
-    if (!appdatasource_1.AppDataSource.isInitialized) {
-        yield appdatasource_1.AppDataSource.initialize();
-    }
+    yield ensureDataSourceInitialized();
     const repository = appdatasource_1.AppDataSource.getRepository(seguimiento_1.Seguimiento);
     return yield repository.find({
-        relations: ['habito'],
+        relations: ['habito', 'usuario'],
         where: { estado: true },
         order: { idSeguimiento: "DESC" }
     });
 });
 exports.listarSeguimientosActivos = listarSeguimientosActivos;
-// Listar todos los seguimientos
 const listarSeguimientos = () => __awaiter(void 0, void 0, void 0, function* () {
-    if (!appdatasource_1.AppDataSource.isInitialized) {
-        yield appdatasource_1.AppDataSource.initialize();
-    }
+    yield ensureDataSourceInitialized();
     const repository = appdatasource_1.AppDataSource.getRepository(seguimiento_1.Seguimiento);
     return yield repository.find({
-        relations: ['habito'],
+        relations: ['habito', 'usuario'],
         order: { idSeguimiento: "DESC" }
     });
 });
 exports.listarSeguimientos = listarSeguimientos;
-// Listar seguimientos por hábito
 const listarSeguimientosPorHabito = (idHabito) => __awaiter(void 0, void 0, void 0, function* () {
-    if (!appdatasource_1.AppDataSource.isInitialized) {
-        yield appdatasource_1.AppDataSource.initialize();
-    }
+    yield ensureDataSourceInitialized();
     const repository = appdatasource_1.AppDataSource.getRepository(seguimiento_1.Seguimiento);
     return yield repository.find({
         where: { habito: { idHabito }, estado: true },
-        relations: ['habito'],
+        relations: ['habito', 'usuario'],
         order: { fecha: "DESC" }
     });
 });
 exports.listarSeguimientosPorHabito = listarSeguimientosPorHabito;
-// Listar seguimientos por usuario
-const listarSeguimientosPorUsuario = (idUsuario) => __awaiter(void 0, void 0, void 0, function* () {
-    if (!appdatasource_1.AppDataSource.isInitialized) {
-        yield appdatasource_1.AppDataSource.initialize();
-    }
-    const repository = appdatasource_1.AppDataSource.getRepository(seguimiento_1.Seguimiento);
-    return yield repository.find({
-        where: { habito: { usuario: { idUsuario }, estado: true } },
-        relations: ['habito', 'habito.usuario'],
-        order: { fecha: "DESC" }
-    });
-});
-exports.listarSeguimientosPorUsuario = listarSeguimientosPorUsuario;
-// Listar seguimientos por usuario y fecha
 const listarSeguimientosPorUsuarioYFecha = (idUsuario, fecha) => __awaiter(void 0, void 0, void 0, function* () {
-    if (!appdatasource_1.AppDataSource.isInitialized) {
-        yield appdatasource_1.AppDataSource.initialize();
-    }
+    yield ensureDataSourceInitialized();
     const repository = appdatasource_1.AppDataSource.getRepository(seguimiento_1.Seguimiento);
-    const startOfDay = new Date(fecha);
-    startOfDay.setHours(0, 0, 0, 0);
-    const endOfDay = new Date(fecha);
-    endOfDay.setHours(23, 59, 59, 999);
-    return yield repository.find({
-        where: {
-            habito: { usuario: { idUsuario }, estado: true },
-            fecha: (0, typeorm_1.Between)(startOfDay, endOfDay)
-        },
-        relations: ['habito', 'habito.usuario'],
-        order: { fecha: "ASC" }
-    });
+    try {
+        const seguimientos = yield repository
+            .createQueryBuilder("seguimiento")
+            .leftJoinAndSelect("seguimiento.habito", "habito")
+            .leftJoinAndSelect("seguimiento.usuario", "usuario")
+            .where("seguimiento.usuario.idUsuario = :idUsuario", { idUsuario })
+            .andWhere("CAST(seguimiento.fecha AS DATE) = :fecha", { fecha }) // 👍 aquí puedes probar también DATE() o CONVERT() según tu motor
+            .andWhere("seguimiento.estado_auditoria = :estado", { estado: 1 }) // ✅ ¡este era el error!
+            .orderBy("seguimiento.fecha", "ASC")
+            .getMany();
+        return seguimientos;
+    }
+    catch (error) {
+        console.error("Error al listar seguimientos por usuario y fecha:", error);
+        return [];
+    }
 });
 exports.listarSeguimientosPorUsuarioYFecha = listarSeguimientosPorUsuarioYFecha;
-// Actualizar seguimiento
-const actualizarSeguimiento = (idSeguimiento, data) => __awaiter(void 0, void 0, void 0, function* () {
-    if (!appdatasource_1.AppDataSource.isInitialized) {
-        yield appdatasource_1.AppDataSource.initialize();
-    }
+const listarSeguimientosCompletadosPorUsuario = (idUsuario) => __awaiter(void 0, void 0, void 0, function* () {
     const repository = appdatasource_1.AppDataSource.getRepository(seguimiento_1.Seguimiento);
-    yield repository.update({ idSeguimiento: idSeguimiento }, data);
+    const seguimientos = yield repository.find({
+        where: {
+            usuario: { idUsuario },
+            completado: true,
+            estado: true
+        },
+        relations: ["habito"]
+    });
+    return seguimientos;
+});
+exports.listarSeguimientosCompletadosPorUsuario = listarSeguimientosCompletadosPorUsuario;
+const actualizarSeguimiento = (idSeguimiento, data) => __awaiter(void 0, void 0, void 0, function* () {
+    yield ensureDataSourceInitialized();
+    const repository = appdatasource_1.AppDataSource.getRepository(seguimiento_1.Seguimiento);
+    yield repository.update({ idSeguimiento }, data);
 });
 exports.actualizarSeguimiento = actualizarSeguimiento;
-// Eliminar seguimiento
 const eliminarSeguimiento = (idSeguimiento) => __awaiter(void 0, void 0, void 0, function* () {
-    if (!appdatasource_1.AppDataSource.isInitialized) {
-        yield appdatasource_1.AppDataSource.initialize();
-    }
+    yield ensureDataSourceInitialized();
     const repository = appdatasource_1.AppDataSource.getRepository(seguimiento_1.Seguimiento);
     yield repository.update({ idSeguimiento }, { estado: false });
 });
 exports.eliminarSeguimiento = eliminarSeguimiento;
-// Activar seguimiento
 const activarSeguimiento = (idSeguimiento) => __awaiter(void 0, void 0, void 0, function* () {
-    if (!appdatasource_1.AppDataSource.isInitialized) {
-        yield appdatasource_1.AppDataSource.initialize();
-    }
+    yield ensureDataSourceInitialized();
     const repository = appdatasource_1.AppDataSource.getRepository(seguimiento_1.Seguimiento);
     yield repository.update({ idSeguimiento }, { estado: true });
 });

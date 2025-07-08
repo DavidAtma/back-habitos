@@ -14,6 +14,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.startServer = void 0;
 const express_1 = __importDefault(require("express"));
+const cors_1 = __importDefault(require("cors"));
+// 🛣️ Importar rutas
 const habito_route_1 = __importDefault(require("./routes/habito.route"));
 const categoria_route_1 = __importDefault(require("./routes/categoria.route"));
 const usuario_route_1 = __importDefault(require("./routes/usuario.route"));
@@ -23,15 +25,22 @@ const recordatorio_route_1 = __importDefault(require("./routes/recordatorio.rout
 const fraseMotivacional_route_1 = __importDefault(require("./routes/fraseMotivacional.route"));
 const seguimiento_route_1 = __importDefault(require("./routes/seguimiento.route"));
 const auth_route_1 = __importDefault(require("./routes/auth.route"));
-const cors_1 = __importDefault(require("cors"));
+// 🔗 Importar conexión a la base de datos
 const appdatasource_1 = require("./config/appdatasource");
 const app = (0, express_1.default)();
+// ✅ Middleware CORS
 app.use((0, cors_1.default)({
-    origin: 'http://127.0.0.1:8080', // Permitir solicitudes solo desde este origen
-    methods: ['GET', 'POST', 'PUT', 'DELETE'], // Métodos permitidos
-    allowedHeaders: ['Content-Type', 'Authorization'], // Encabezados permitidos
+    origin: [
+        'http://127.0.0.1:8080',
+        'http://localhost:3000',
+        'http://10.0.2.2:3000'
+    ],
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
 }));
+//  Middleware para parsear JSON
 app.use(express_1.default.json());
+//  Definir prefijos y rutas
 app.use('/api/v1/habitos', habito_route_1.default);
 app.use('/api/v1/categorias', categoria_route_1.default);
 app.use('/api/v1/usuarios', usuario_route_1.default);
@@ -41,13 +50,15 @@ app.use('/api/v1/recordatorios', recordatorio_route_1.default);
 app.use('/api/v1/frases', fraseMotivacional_route_1.default);
 app.use('/api/v1/auth', auth_route_1.default);
 app.use('/api/v1/seguimientos', seguimiento_route_1.default);
+// Manejo de rutas no encontradas
 app.use((req, res) => {
     res.status(404).json({
         success: false,
-        message: "Ruta no encontrada",
+        message: " Ruta no encontrada",
         data: null
     });
 });
+//  Manejo de errores internos
 app.use((err, req, res, _next) => {
     console.error("Error interno:", err);
     res.status(500).json({
@@ -56,13 +67,14 @@ app.use((err, req, res, _next) => {
         data: null
     });
 });
+// 🚀 Inicialización del servidor y la base de datos
 const startServer = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
         yield appdatasource_1.AppDataSource.initialize();
-        console.log('Conectado a la BD');
+        console.log('Conectado a la base de datos');
     }
     catch (error) {
-        console.error('Error al conectar a la BD', error);
+        console.error('Error al conectar a la base de datos', error);
     }
 });
 exports.startServer = startServer;

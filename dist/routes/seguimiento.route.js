@@ -37,23 +37,23 @@ const express_1 = require("express");
 const seguimientoController = __importStar(require("../controllers/seguimiento.controller"));
 const auth_middleware_1 = require("../middlewares/auth.middleware");
 const router = (0, express_1.Router)();
-// POST /seguimientos
+// Crear seguimiento (POST)
 router.post("/", auth_middleware_1.verificarJWT, seguimientoController.insertarSeguimiento);
-// GET /seguimientos/activos
+// Obtener todos los seguimientos activos (GET)
 router.get("/activos", auth_middleware_1.verificarJWT, seguimientoController.listarSeguimientosActivos);
-// GET /seguimientos
+// Obtener todos los seguimientos (GET)
 router.get("/", auth_middleware_1.verificarJWT, seguimientoController.listarSeguimientos);
-// GET /seguimientos/habito/:idHabito
+// Obtener seguimientos por hábito (GET)
 router.get("/habito/:idHabito", auth_middleware_1.verificarJWT, seguimientoController.listarSeguimientosPorHabito);
-// GET /seguimientos/usuario/:idUsuario
-router.get("/usuario/:idUsuario", auth_middleware_1.verificarJWT, seguimientoController.listarSeguimientosPorUsuario);
-// Nuevo GET /seguimientos/usuario/:idUsuario/fecha/:fecha
+// Obtener seguimientos por usuario y fecha (GET)
 router.get("/usuario/:idUsuario/fecha/:fecha", auth_middleware_1.verificarJWT, seguimientoController.listarSeguimientosPorUsuarioYFecha);
-// PUT /seguimientos/:idSeguimiento
+// Nueva: Obtener todos los seguimientos completados por usuario (sin fecha)
+router.get("/usuario/:idUsuario/completados", auth_middleware_1.verificarJWT, seguimientoController.listarSeguimientosCompletadosPorUsuario);
+// Actualizar seguimiento (PUT)
 router.put("/:idSeguimiento", auth_middleware_1.verificarJWT, seguimientoController.actualizarSeguimiento);
-// PUT /seguimientos/activar/:idSeguimiento
+// Activar seguimiento (PUT)
 router.put("/activar/:idSeguimiento", auth_middleware_1.verificarJWT, seguimientoController.activarSeguimiento);
-// DELETE /seguimientos/:idSeguimiento
+// Eliminar seguimiento (DELETE)
 router.delete("/:idSeguimiento", auth_middleware_1.verificarJWT, seguimientoController.eliminarSeguimiento);
 exports.default = router;
 //# sourceMappingURL=seguimiento.route.js.map

@@ -45,26 +45,33 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.login = void 0;
 const authService = __importStar(require("../services/auth.service"));
 const base_response_1 = require("../shared/base-response");
+const jwt_utils_1 = require("../shared/jwt.utils");
 const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { correo, contrasena } = req.body;
     if (!correo || !contrasena) {
-        res.status(400).json(base_response_1.BaseResponse.error("Correo y contraseña requeridos", 400));
+        res.status(400).json(base_response_1.BaseResponse.error("Correo y contraseña requeridos"));
         return;
     }
     try {
-        const result = yield authService.login(correo, contrasena);
-        if (!result) {
-            res.status(401).json(base_response_1.BaseResponse.error("Credenciales incorrectas", 401));
+        const usuario = yield authService.login(correo, contrasena);
+        if (!usuario) {
+            res.status(404).json(base_response_1.BaseResponse.error("Usuario o contraseña incorrectos"));
             return;
         }
+        // Generar el token
+        const token = (0, jwt_utils_1.generarToken)(usuario);
         res.status(200).json(base_response_1.BaseResponse.success({
-            token: result.token,
-            usuario: result.usuario
+            token,
+            usuario: {
+                idUsuario: usuario.idUsuario,
+                correo: usuario.correo,
+                rol: usuario.rol.nombre
+            }
         }, "Inicio de sesión exitoso"));
     }
     catch (error) {
         console.error("Error en login:", error);
-        res.status(500).json(base_response_1.BaseResponse.error("Error interno del servidor"));
+        res.status(500).json(base_response_1.BaseResponse.error("Error en el servidor"));
     }
 });
 exports.login = login;

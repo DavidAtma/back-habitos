@@ -1,5 +1,9 @@
 import { AppDataSource } from "../config/appdatasource";
 import { Habito } from "../entities/habito";
+import { Categoria } from "../entities/categoria";
+import { Usuario } from "../entities/usuario"; 
+
+
 
 // Insertar hábito y devolver el objeto con ID generado
 export const insertarHabito = async (habito: Partial<Habito>): Promise<Habito> => {
@@ -8,6 +12,16 @@ export const insertarHabito = async (habito: Partial<Habito>): Promise<Habito> =
     }
 
     const repository = AppDataSource.getRepository(Habito);
+
+
+if (habito.categoria && habito.categoria.idCategoria) {
+    habito.categoria = { idCategoria: habito.categoria.idCategoria } as Categoria;
+}
+
+    if (habito.usuario && habito.usuario.idUsuario) {
+        habito.usuario = { idUsuario: habito.usuario.idUsuario } as Usuario;
+    }
+
     const nuevoHabito = await repository.save(habito);
     return nuevoHabito;
 };
@@ -60,7 +74,24 @@ export const actualizarHabito = async (idHabito: number, data: Partial<Habito>):
     }
 
     const repository = AppDataSource.getRepository(Habito);
-    await repository.update({ idHabito }, data);
+    const habito = await repository.findOne({ where: { idHabito } });
+
+    if (!habito) {
+        throw new Error('Hábito no encontrado');
+    }
+
+    //Mapear los campos que vienen del body:
+    habito.nombre = data.nombre ?? habito.nombre;
+    habito.descripcion = data.descripcion ?? habito.descripcion;
+    habito.horaSugerida = data.horaSugerida ?? habito.horaSugerida;
+
+    //AQUÍ: Mapear idCategoria correctamente:
+    if (data.categoria && data.categoria.idCategoria) {
+        habito.categoria = { idCategoria: data.categoria.idCategoria } as Categoria;
+    }
+
+
+    await repository.save(habito);
 };
 
 // Eliminar hábito

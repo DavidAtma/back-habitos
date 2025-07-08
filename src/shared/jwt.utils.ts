@@ -3,23 +3,18 @@ import { Usuario } from "../entities/usuario";
 
 const SECRET_KEY = process.env.JWT_SECRET || "Yoku1510*";
 
+// Crear token
 export const generarToken = (usuario: Usuario): string => {
-  const payload = {
-    idUsuario: usuario.idUsuario,
-    correo: usuario.correo,
-    rol: usuario.rol?.nombre || "Usuario"
-  };
+    const payload = {
+        idUsuario: usuario.idUsuario,
+        correo: usuario.correo,
+        rol: usuario.rol.nombre
+    };
 
-  return jwt.sign(payload, SECRET_KEY, {
-    expiresIn: "24h"
-  });
+    return jwt.sign(payload, SECRET_KEY, { expiresIn: "2h" });
 };
 
-export const verificarToken = (token: string): any | null => {
-  try {
+// Verificar token
+export const verificarToken = (token: string) => {
     return jwt.verify(token, SECRET_KEY);
-  } catch (error) {
-    console.error("Error verificando token JWT:", error);
-    return null;
-  }
 };

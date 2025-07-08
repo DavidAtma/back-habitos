@@ -9,21 +9,11 @@ export const insertarUsuario = async (usuario: Partial<Usuario>): Promise<Usuari
     }
 
     const repository = AppDataSource.getRepository(Usuario);
-    
-    const correo = usuario.correo.trim().toLowerCase();
 
-    const usuarioExistente = await repository.findOne({
-        where: { correo }
-    });
-
-    if (usuarioExistente) {
-        throw new Error("El correo ya está registrado");
+    // Hashear la contraseña si existe
+    if (usuario.contrasena) {
+        usuario.contrasena = await bcrypt.hash(usuario.contrasena, 10);
     }
-
-    const contrasenaHash = await bcrypt.hash(usuario.contrasena, 10);
-    
-    usuario.correo = correo;
-    usuario.contrasena = contrasenaHash;
 
     return await repository.save(usuario);
 };
@@ -49,10 +39,27 @@ export const listarUsuarios = async (): Promise<Usuario[]> => {
   }
 
   return await AppDataSource.getRepository(Usuario).find({
-    order: { idUsuario: "ASC" },
+    order: { idUsuario: "ASC" }, // 👈 Aquí ordenas por ID ascendente
     relations: ["rol"]
   });
 };
+
+
+// Buscar usuario por correo
+/*export const buscarUsuarioPorCorreo = async (correo: string): Promise<Usuario | null> => {
+    if (!AppDataSource.isInitialized) {
+        await AppDataSource.initialize();
+    }
+
+    const repository = AppDataSource.getRepository(Usuario);
+    return await repository.findOne({
+        where: {
+            correo: correo.trim().toLowerCase(),
+            estado: true
+        },
+        relations: ['rol']
+    });
+};*/
 
 // Actualizar usuario
 export const actualizarUsuario = async (idUsuario: number, data: Partial<Usuario>): Promise<void> => {
@@ -62,6 +69,7 @@ export const actualizarUsuario = async (idUsuario: number, data: Partial<Usuario
 
     const repository = AppDataSource.getRepository(Usuario);
 
+    // Hashear la nueva contraseña si está presente
     if (data.contrasena) {
         data.contrasena = await bcrypt.hash(data.contrasena, 10);
     }
@@ -89,17 +97,15 @@ export const activarUsuario = async (idUsuario: number): Promise<void> => {
     await repository.update({ idUsuario }, { estado: true });
 };
 
-
-
-// Obtener un usuario por su id
-export const obtenerUsuarioPorId = async (
-  idUsuario: number
-): Promise<Usuario | null> => {
+export const obtenerUsuarioPorId = async (idUsuario: number): Promise<Usuario | null> => {
   if (!AppDataSource.isInitialized) {
     await AppDataSource.initialize();
   }
+
   return await AppDataSource.getRepository(Usuario).findOne({
     where: { idUsuario },
-    relations: ['rol']
+    relations: {
+      rol: true, // 👈 importante para que venga el nombre del rol también
+    },
   });
 };

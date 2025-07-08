@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Seguimiento = void 0;
 const typeorm_1 = require("typeorm");
 const habito_1 = require("./habito");
+const usuario_1 = require("./usuario");
 let Seguimiento = class Seguimiento {
 };
 exports.Seguimiento = Seguimiento;
@@ -25,6 +26,11 @@ __decorate([
     __metadata("design:type", habito_1.Habito)
 ], Seguimiento.prototype, "habito", void 0);
 __decorate([
+    (0, typeorm_1.ManyToOne)(() => usuario_1.Usuario, (usuario) => usuario.idUsuario),
+    (0, typeorm_1.JoinColumn)({ name: 'id_usuario' }),
+    __metadata("design:type", usuario_1.Usuario)
+], Seguimiento.prototype, "usuario", void 0);
+__decorate([
     (0, typeorm_1.Column)({ name: 'fecha', type: 'date' }),
     __metadata("design:type", Date)
 ], Seguimiento.prototype, "fecha", void 0);
@@ -33,11 +39,15 @@ __decorate([
     __metadata("design:type", Boolean)
 ], Seguimiento.prototype, "completado", void 0);
 __decorate([
+    (0, typeorm_1.Column)({ name: 'nota_dia', type: 'varchar', length: 250 }),
+    __metadata("design:type", String)
+], Seguimiento.prototype, "notaDia", void 0);
+__decorate([
     (0, typeorm_1.CreateDateColumn)({ name: 'fecha_creacion', type: 'datetime' }),
     __metadata("design:type", Date)
 ], Seguimiento.prototype, "fechaCreacion", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ name: 'estado_auditoria', type: 'bit', default: 1 }),
+    (0, typeorm_1.Column)({ name: 'estado_auditoria', type: 'bit', default: () => '1' }),
     __metadata("design:type", Boolean)
 ], Seguimiento.prototype, "estado", void 0);
 exports.Seguimiento = Seguimiento = __decorate([

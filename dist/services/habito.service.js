@@ -18,6 +18,12 @@ const insertarHabito = (habito) => __awaiter(void 0, void 0, void 0, function* (
         yield appdatasource_1.AppDataSource.initialize();
     }
     const repository = appdatasource_1.AppDataSource.getRepository(habito_1.Habito);
+    if (habito.categoria && habito.categoria.idCategoria) {
+        habito.categoria = { idCategoria: habito.categoria.idCategoria };
+    }
+    if (habito.usuario && habito.usuario.idUsuario) {
+        habito.usuario = { idUsuario: habito.usuario.idUsuario };
+    }
     const nuevoHabito = yield repository.save(habito);
     return nuevoHabito;
 });
@@ -62,11 +68,24 @@ const listarHabitosPorUsuario = (idUsuario) => __awaiter(void 0, void 0, void 0,
 exports.listarHabitosPorUsuario = listarHabitosPorUsuario;
 // Actualizar hábito
 const actualizarHabito = (idHabito, data) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a, _b, _c;
     if (!appdatasource_1.AppDataSource.isInitialized) {
         yield appdatasource_1.AppDataSource.initialize();
     }
     const repository = appdatasource_1.AppDataSource.getRepository(habito_1.Habito);
-    yield repository.update({ idHabito }, data);
+    const habito = yield repository.findOne({ where: { idHabito } });
+    if (!habito) {
+        throw new Error('Hábito no encontrado');
+    }
+    //Mapear los campos que vienen del body:
+    habito.nombre = (_a = data.nombre) !== null && _a !== void 0 ? _a : habito.nombre;
+    habito.descripcion = (_b = data.descripcion) !== null && _b !== void 0 ? _b : habito.descripcion;
+    habito.horaSugerida = (_c = data.horaSugerida) !== null && _c !== void 0 ? _c : habito.horaSugerida;
+    //AQUÍ: Mapear idCategoria correctamente:
+    if (data.categoria && data.categoria.idCategoria) {
+        habito.categoria = { idCategoria: data.categoria.idCategoria };
+    }
+    yield repository.save(habito);
 });
 exports.actualizarHabito = actualizarHabito;
 // Eliminar hábito

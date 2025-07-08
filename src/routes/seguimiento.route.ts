@@ -4,31 +4,31 @@ import { verificarJWT } from "../middlewares/auth.middleware";
 
 const router = Router();
 
-// POST /seguimientos
+// Crear seguimiento (POST)
 router.post("/", verificarJWT, seguimientoController.insertarSeguimiento);
 
-// GET /seguimientos/activos
+// Obtener todos los seguimientos activos (GET)
 router.get("/activos", verificarJWT, seguimientoController.listarSeguimientosActivos);
 
-// GET /seguimientos
+// Obtener todos los seguimientos (GET)
 router.get("/", verificarJWT, seguimientoController.listarSeguimientos);
 
-// GET /seguimientos/habito/:idHabito
+// Obtener seguimientos por hábito (GET)
 router.get("/habito/:idHabito", verificarJWT, seguimientoController.listarSeguimientosPorHabito);
 
-// GET /seguimientos/usuario/:idUsuario
-router.get("/usuario/:idUsuario", verificarJWT, seguimientoController.listarSeguimientosPorUsuario);
-
-// Nuevo GET /seguimientos/usuario/:idUsuario/fecha/:fecha
+// Obtener seguimientos por usuario y fecha (GET)
 router.get("/usuario/:idUsuario/fecha/:fecha", verificarJWT, seguimientoController.listarSeguimientosPorUsuarioYFecha);
 
-// PUT /seguimientos/:idSeguimiento
+// Nueva: Obtener todos los seguimientos completados por usuario (sin fecha)
+router.get("/usuario/:idUsuario/completados", verificarJWT, seguimientoController.listarSeguimientosCompletadosPorUsuario);
+
+// Actualizar seguimiento (PUT)
 router.put("/:idSeguimiento", verificarJWT, seguimientoController.actualizarSeguimiento);
 
-// PUT /seguimientos/activar/:idSeguimiento
+// Activar seguimiento (PUT)
 router.put("/activar/:idSeguimiento", verificarJWT, seguimientoController.activarSeguimiento);
 
-// DELETE /seguimientos/:idSeguimiento
+// Eliminar seguimiento (DELETE)
 router.delete("/:idSeguimiento", verificarJWT, seguimientoController.eliminarSeguimiento);
 
 export default router;

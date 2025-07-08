@@ -1,122 +1,100 @@
 import { AppDataSource } from "../config/appdatasource";
 import { Seguimiento } from "../entities/seguimiento";
-import { Between } from "typeorm"; // Importar Between
+import { Between } from "typeorm";
 
-// Insertar seguimiento
-export const insertarSeguimiento = async (seguimiento: Partial<Seguimiento>): Promise<Seguimiento> => {
+const ensureDataSourceInitialized = async () => {
     if (!AppDataSource.isInitialized) {
         await AppDataSource.initialize();
     }
+};
 
+export const insertarSeguimiento = async (seguimiento: Partial<Seguimiento>): Promise<Seguimiento> => {
+    await ensureDataSourceInitialized();
     const repository = AppDataSource.getRepository(Seguimiento);
     return await repository.save(seguimiento);
 };
 
-// Listar todos los seguimientos activos
 export const listarSeguimientosActivos = async (): Promise<Seguimiento[]> => {
-    if (!AppDataSource.isInitialized) {
-        await AppDataSource.initialize();
-    }
-
+    await ensureDataSourceInitialized();
     const repository = AppDataSource.getRepository(Seguimiento);
     return await repository.find({
-        relations: ['habito'],
+        relations: ['habito', 'usuario'],
         where: { estado: true },
         order: { idSeguimiento: "DESC" }
     });
 };
 
-// Listar todos los seguimientos
 export const listarSeguimientos = async (): Promise<Seguimiento[]> => {
-    if (!AppDataSource.isInitialized) {
-        await AppDataSource.initialize();
-    }
-
+    await ensureDataSourceInitialized();
     const repository = AppDataSource.getRepository(Seguimiento);
     return await repository.find({
-        relations: ['habito'],
+        relations: ['habito', 'usuario'],
         order: { idSeguimiento: "DESC" }
     });
 };
 
-// Listar seguimientos por hábito
 export const listarSeguimientosPorHabito = async (idHabito: number): Promise<Seguimiento[]> => {
-    if (!AppDataSource.isInitialized) {
-        await AppDataSource.initialize();
-    }
-
+    await ensureDataSourceInitialized();
     const repository = AppDataSource.getRepository(Seguimiento);
     return await repository.find({
         where: { habito: { idHabito }, estado: true },
-        relations: ['habito'],
+        relations: ['habito', 'usuario'],
         order: { fecha: "DESC" }
     });
 };
 
-// Listar seguimientos por usuario
-export const listarSeguimientosPorUsuario = async (idUsuario: number): Promise<Seguimiento[]> => {
-    if (!AppDataSource.isInitialized) {
-        await AppDataSource.initialize();
-    }
-
-    const repository = AppDataSource.getRepository(Seguimiento);
-    return await repository.find({
-        where: { habito: { usuario: { idUsuario }, estado: true } },
-        relations: ['habito', 'habito.usuario'],
-        order: { fecha: "DESC" }
-    });
-};
-
-// Listar seguimientos por usuario y fecha
 export const listarSeguimientosPorUsuarioYFecha = async (idUsuario: number, fecha: string): Promise<Seguimiento[]> => {
-    if (!AppDataSource.isInitialized) {
-        await AppDataSource.initialize();
-    }
-
+    await ensureDataSourceInitialized();
     const repository = AppDataSource.getRepository(Seguimiento);
 
-    const startOfDay = new Date(fecha);
-    startOfDay.setHours(0, 0, 0, 0);
-    const endOfDay = new Date(fecha);
-    endOfDay.setHours(23, 59, 59, 999);
+    try {
+        const seguimientos = await repository
+            .createQueryBuilder("seguimiento")
+            .leftJoinAndSelect("seguimiento.habito", "habito")
+            .leftJoinAndSelect("seguimiento.usuario", "usuario")
+            .where("seguimiento.usuario.idUsuario = :idUsuario", { idUsuario })
+            .andWhere("CAST(seguimiento.fecha AS DATE) = :fecha", { fecha })  // 👍 aquí puedes probar también DATE() o CONVERT() según tu motor
+            .andWhere("seguimiento.estado_auditoria = :estado", { estado: 1 })   // ✅ ¡este era el error!
+            .orderBy("seguimiento.fecha", "ASC")
+            .getMany();
 
-    return await repository.find({
+        return seguimientos;
+
+    } catch (error) {
+        console.error("Error al listar seguimientos por usuario y fecha:", error);
+        return [];
+    }
+};
+
+export const listarSeguimientosCompletadosPorUsuario = async (idUsuario: number) => {
+    const repository = AppDataSource.getRepository(Seguimiento);
+
+    const seguimientos = await repository.find({
         where: {
-            habito: { usuario: { idUsuario }, estado: true },
-            fecha: Between(startOfDay, endOfDay)
+            usuario: { idUsuario },
+            completado: true,
+            estado: true
         },
-        relations: ['habito', 'habito.usuario'],
-        order: { fecha: "ASC" }
+        relations: ["habito"]
     });
+
+    return seguimientos;
 };
 
-
-// Actualizar seguimiento
 export const actualizarSeguimiento = async (idSeguimiento: number, data: Partial<Seguimiento>): Promise<void> => {
-    if (!AppDataSource.isInitialized) {
-        await AppDataSource.initialize();
-    }
-
+    await ensureDataSourceInitialized();
     const repository = AppDataSource.getRepository(Seguimiento);
-    await repository.update({ idSeguimiento: idSeguimiento }, data);
+    await repository.update({ idSeguimiento }, data);
 };
 
-// Eliminar seguimiento
 export const eliminarSeguimiento = async (idSeguimiento: number): Promise<void> => {
-    if (!AppDataSource.isInitialized) {
-        await AppDataSource.initialize();
-    }
-
+    await ensureDataSourceInitialized();
     const repository = AppDataSource.getRepository(Seguimiento);
     await repository.update({ idSeguimiento }, { estado: false });
 };
 
-// Activar seguimiento
 export const activarSeguimiento = async (idSeguimiento: number): Promise<void> => {
-    if (!AppDataSource.isInitialized) {
-        await AppDataSource.initialize();
-    }
-
+    await ensureDataSourceInitialized();
     const repository = AppDataSource.getRepository(Seguimiento);
     await repository.update({ idSeguimiento }, { estado: true });
 };
