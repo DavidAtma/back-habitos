@@ -75,4 +75,9 @@ https://documenter.getpostman.com/view/39755379/2sB2x5JDJf
 
 ---
 
+## Diagrama de Base de Datos
+
+-![DiagramaBD](https://github.com/user-attachments/assets/a106685f-2501-47e8-8053-1d9c7014f24c)
+
+
 ¡Gracias por revisar nuestro proyecto HabitFlow! 😄
