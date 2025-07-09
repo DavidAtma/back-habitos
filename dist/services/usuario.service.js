@@ -108,6 +108,8 @@ const actualizarUsuario = (idUsuario, data) => __awaiter(void 0, void 0, void 0,
     if (data.contrasena) {
         data.contrasena = yield bcrypt.hash(data.contrasena, 10);
     }
+    // Elimina idUsuario desde el frontend
+    delete data.idUsuario;
     yield repository.update({ idUsuario }, data);
 });
 exports.actualizarUsuario = actualizarUsuario;
