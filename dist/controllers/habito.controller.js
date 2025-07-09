@@ -42,7 +42,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.activarHabito = exports.eliminarHabito = exports.actualizarHabito = exports.listarHabitosPorUsuario = exports.listarHabitosActivos = exports.listarHabitos = exports.insertarHabito = void 0;
+exports.obtenerHabitoPorId = exports.activarHabito = exports.eliminarHabito = exports.actualizarHabito = exports.listarHabitosPorUsuario = exports.listarHabitosActivos = exports.listarHabitos = exports.insertarHabito = void 0;
 const habitoService = __importStar(require("../services/habito.service"));
 const base_response_1 = require("../shared/base-response");
 const constants_1 = require("../shared/constants");
@@ -136,4 +136,25 @@ const activarHabito = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     }
 });
 exports.activarHabito = activarHabito;
+// Obtener un hábito por ID
+const obtenerHabitoPorId = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { idHabito } = req.params; // Extraemos el idHabito de los parámetros de la URL
+    try {
+        // Llamamos al servicio para obtener el hábito por ID
+        const habito = yield habitoService.obtenerHabitoPorId(Number(idHabito));
+        if (!habito) {
+            // Si no se encuentra el hábito, respondemos con un 404
+            res.status(404).json({ success: false, message: "Hábito no encontrado" });
+            return; // Asegúrate de terminar la ejecución aquí si no hay hábito
+        }
+        // Si encontramos el hábito, lo devolvemos en formato JSON con un 200
+        res.json({ success: true, data: habito });
+    }
+    catch (error) {
+        // En caso de error, respondemos con un 500 y el mensaje de error
+        console.error("Error al obtener hábito:", error);
+        res.status(500).json({ success: false, message: "Error al obtener el hábito", error });
+    }
+});
+exports.obtenerHabitoPorId = obtenerHabitoPorId;
 //# sourceMappingURL=habito.controller.js.map

@@ -74,3 +74,27 @@ export const activarFrase = async (req: Request, res: Response) => {
         res.status(500).json(BaseResponse.error(error.message));
     }
 };
+
+// Obtener frase por ID
+export const obtenerFrasePorId = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const idFrase = parseInt(req.params.idFrase);
+
+    if (isNaN(idFrase)) {
+      res.status(400).json(BaseResponse.error("ID de frase inválido"));
+      return;
+    }
+
+    const frase = await fraseService.obtenerFrasePorId(idFrase);
+
+    if (!frase) {
+      res.status(404).json(BaseResponse.error("Frase no encontrada"));
+      return;
+    }
+
+    res.json(BaseResponse.success(frase, MensajeController.CONSULTA_OK));
+  } catch (error: any) {
+    console.error("Error obtenerFrasePorId:", error);
+    res.status(500).json(BaseResponse.error(error.message));
+  }
+};

@@ -65,3 +65,15 @@ export const activarFrase = async (idFrase: number): Promise<void> => {
     const repository = AppDataSource.getRepository(FraseMotivacional);
     await repository.update({ idFrase }, { estado: true });
 };
+
+// Obtener frase por ID
+export const obtenerFrasePorId = async (idFrase: number): Promise<FraseMotivacional | null> => {
+  if (!AppDataSource.isInitialized) {
+    await AppDataSource.initialize();
+  }
+
+  const repository = AppDataSource.getRepository(FraseMotivacional);
+  const frase = await repository.findOneBy({ idFrase });
+
+  return frase || null;
+};
