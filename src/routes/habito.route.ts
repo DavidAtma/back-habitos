@@ -25,4 +25,6 @@ router.patch("/activar/:idHabito", verificarJWT, habitoController.activarHabito)
 // DELETE /habitos/:idHabito
 router.delete("/:idHabito", verificarJWT, habitoController.eliminarHabito);
 
+router.get("/:idHabito", verificarJWT, habitoController.obtenerHabitoPorId);  // Ruta para obtener un hábito por su ID
+
 export default router;
