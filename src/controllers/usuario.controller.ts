@@ -7,7 +7,7 @@ import AppDataSource from "../config/appdatasource";
 import { Rol } from "../entities/rol";
 import * as bcrypt from "bcryptjs";
 
-// Insertar usuario
+// Insertar usuario con rol 2 por defecto
 export const insertarUsuario = async (req: Request, res: Response) => {
     try {
         const data: Partial<Usuario> = req.body;
@@ -29,7 +29,7 @@ export const insertarUsuario = async (req: Request, res: Response) => {
             return;
         }
 
-        // Buscar el rol
+        // Buscar el rol 2 (Usuario)
         const rolUsuario = await rolRepository.findOneBy({ idRol: 2 });
 
         if (!rolUsuario) {
