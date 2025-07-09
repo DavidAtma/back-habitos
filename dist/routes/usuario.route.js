@@ -38,7 +38,7 @@ const usuarioController = __importStar(require("../controllers/usuario.controlle
 const auth_middleware_1 = require("../middlewares/auth.middleware");
 const router = (0, express_1.Router)();
 // POST /usuarios
-router.post("/", auth_middleware_1.verificarJWT, usuarioController.insertarUsuario);
+router.post("/", usuarioController.insertarUsuario);
 // GET /usuarios
 router.get("/", auth_middleware_1.verificarJWT, usuarioController.listarUsuarios);
 // GET /usuarios/activos

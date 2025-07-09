@@ -5,7 +5,7 @@ import { verificarJWT } from "../middlewares/auth.middleware";
 const router = Router();
 
 // POST /usuarios
-router.post("/", verificarJWT, usuarioController.insertarUsuario);
+router.post("/", usuarioController.insertarUsuario);
 
 // GET /usuarios
 router.get("/", verificarJWT, usuarioController.listarUsuarios);

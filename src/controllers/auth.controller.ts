@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import * as authService from "../services/auth.service";
 import { BaseResponse } from "../shared/base-response";
-import { MensajeController } from "../shared/constants";
 import { generarToken } from "../shared/jwt.utils";
 
 export const login = async (req: Request, res: Response): Promise<void> => {
@@ -28,9 +27,9 @@ export const login = async (req: Request, res: Response): Promise<void> => {
         token,
         usuario: {
           idUsuario: usuario.idUsuario,
-          correo: usuario.correo,
-          rol: usuario.rol.nombre
-        }
+          correo: usuario.correo
+        },
+        rolNombre: usuario.rol?.nombre || "Usuario"  // 
       },
       "Inicio de sesión exitoso"
     ));
